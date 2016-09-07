@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 /**
- * 用户表t_base_user
+ * 用户表 t_base_user
  */
 @Entity
 @Table(name = "T_BASE_USER")
