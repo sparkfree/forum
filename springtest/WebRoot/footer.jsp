@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>导航栏公共页面</title>
+    <title>底部公共页面</title>
     
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
@@ -19,18 +19,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
-
+	<style type="text/css">
+		#footer {position: relative;
+			    margin-top: -60px; 
+			    height: 60px;
+			    clear:both;
+			    background:#00A2CA} 
+	</style>
   </head>
   
   <body>
-    <div>
-    	<ul id="nav">
-    		<li><a>首页</a></li>
-    		<li><a>话题</a></li>
-    		<li><a>发现</a></li>
-    		<li><a>消息</a></li>
-    		<li><a href="mytopic.jsp">我的</a></li>
-    	</ul>
-    </div>
+    <div id="footer">杭州星火信息科技有限公司</div>
   </body>
 </html>

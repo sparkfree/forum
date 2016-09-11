@@ -1,9 +1,16 @@
 package com.springtest.topic.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
+import com.springtest.common.util.JsonDateSerializer;
+
 /**
  * 话题表 t_base_topic
  */
@@ -19,7 +26,7 @@ public class TBaseTopic implements java.io.Serializable {
 	private Integer heart;//点赞数
 	private String image;//图片资源
 	private String userid;//电话号码
-
+	public Date publishdate;//发布时间
 	// Constructors
 	/** default constructor */
 	public TBaseTopic() {
@@ -31,12 +38,13 @@ public class TBaseTopic implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TBaseTopic(String id,String topic,Integer heart,String image,String userid) {
+	public TBaseTopic(String id,String topic,Integer heart,String image,String userid,Date publishdate) {
 		this.userid = userid;
 		this.topic=topic;
 		this.heart=heart;
 		this.image=image;
 		this.userid=userid;
+		this.publishdate=publishdate;
 	}
 
 	// Property accessors
@@ -84,4 +92,15 @@ public class TBaseTopic implements java.io.Serializable {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
+	
+	@JsonSerialize(using=JsonDateSerializer.class)
+	@Column(name = "PUBLISHDATE", length = 7)
+	public Date getPublishdate() {
+		return publishdate;
+	}
+
+	public void setPublishdate(Date publishdate) {
+		this.publishdate = publishdate;
+	}
+	
 }
