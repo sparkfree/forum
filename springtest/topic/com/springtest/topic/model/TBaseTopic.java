@@ -25,7 +25,8 @@ public class TBaseTopic implements java.io.Serializable {
 	private String topic;//话题
 	private Integer heart;//点赞数
 	private String image;//图片资源
-	private String userid;//电话号码
+	private String userid;//用户ID
+	private String username;//用户名
 	public Date publishdate;//发布时间
 	// Constructors
 	/** default constructor */
@@ -38,12 +39,13 @@ public class TBaseTopic implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TBaseTopic(String id,String topic,Integer heart,String image,String userid,Date publishdate) {
+	public TBaseTopic(String id,String topic,Integer heart,String image,String userid,String username,Date publishdate) {
 		this.userid = userid;
 		this.topic=topic;
 		this.heart=heart;
 		this.image=image;
 		this.userid=userid;
+		this.username=username;
 		this.publishdate=publishdate;
 	}
 
@@ -92,7 +94,15 @@ public class TBaseTopic implements java.io.Serializable {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	
+	@Column(name = "USERNAME", length = 30)
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	@JsonSerialize(using=JsonDateSerializer.class)
 	@Column(name = "PUBLISHDATE", length = 7)
 	public Date getPublishdate() {

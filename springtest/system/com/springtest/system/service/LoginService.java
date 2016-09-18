@@ -30,13 +30,26 @@ public class LoginService {
 		}
 	}
 	/**
+	 * 查找用户信息根据userid
+	 * @param userid
+	 * @return
+	 */
+	public TBaseUser findTBaseUser(String userid){
+		List<TBaseUser>userlist=this.genericHibernateDao.find("from TBaseUser t where t.userid=?",new Object[]{userid});
+		if(userlist!=null&&userlist.size()>0){
+			return userlist.get(0);
+		}else{
+			return null;
+		}
+	}
+	/**
 	 * 添加用户
 	 * @param user 用户信息
 	 * @return
 	 */
 	public Boolean addTBaseUser(TBaseUser user){
 		try {
-			this.genericHibernateDao.save(user);
+			this.genericHibernateDao.saveOrUpdate(user);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;

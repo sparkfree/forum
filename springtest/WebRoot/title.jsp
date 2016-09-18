@@ -25,7 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
     <div>
     	<ul id="nav">
-    		<li><a>首页</a></li>
+    		<li><a href="index.jsp">首页</a></li>
     		<li><a>话题</a></li>
     		<li><a>发现</a></li>
     		<li><a>消息</a></li>

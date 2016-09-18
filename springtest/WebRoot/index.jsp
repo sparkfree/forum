@@ -47,7 +47,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 dataType: "json",
                 success: function(data) {
                     $(data).each(function(n,value){
-                    	$("#topic").append("<div style='border:1px solid gray;margin-top:20px;height:100px;'><div style=''><a href=''>"+value.userid+"</a>发布于"+value.publishdate+"</div><div style=''>"+value.topic+"</div><div>点赞数："+value.heart+"</div></div>");
+                    	$("#topic").append("<div style='border:1px solid gray;margin-top:20px;height:100px;'><div style=''><a href=''>"+value.username+"</a>发布于"+value.publishdate+"</div><div style=''>"+value.topic+"</div><div>点赞数："+value.heart+"</div></div>");
                     });
                 }, error: function(error) {
                 
@@ -61,7 +61,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	<jsp:include page="title.jsp"></jsp:include>
     <div style="">
     	<div id="topic" style="border: 1px solid red;width: 75%;float:left;margin-left: 30px;">
-    		<div id="follow">this is a scroll test;<br/>    页面下拉自动加载内容</div>  
+<!--     		<div id="follow">this is a scroll test;<br/>    页面下拉自动加载内容</div>   -->
 <!--         <div style='border:1px solid tomato;margin-top:20px;color:#ac1;height:500' >hello world test DIV</div>   -->
     	</div>
     	<div id="" style="border: 1px solid green;width: 20%;float:left;">

@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.springtest.common.util.DateUtil;
 import com.springtest.system.model.TBaseUser;
@@ -64,6 +65,37 @@ public class LoginAction {
 			out.print("fail");
 		}
 	}
+	@RequestMapping(value = "/updatemyinfo.do", method = RequestMethod.POST)
+	@ResponseBody
+	public TBaseUser updatemyinfo(String userid,String username,String phonenumber,String email,String address){
+		TBaseUser user=this.loginservice.findTBaseUser(userid);
+		if(user!=null){
+			user.setUsername(username);
+			user.setPhonenumber(phonenumber);
+			user.setEmail(email);
+			user.setAddress(address);
+			boolean result=this.loginservice.addTBaseUser(user);
+			if(result==true){
+				return user;
+			}else{
+				return null;
+			}
+		}else{
+			return null;
+		}
+	}
+	
+	@RequestMapping(value = "/getmyinfo.do", method = RequestMethod.POST)
+	@ResponseBody
+	public TBaseUser getmyinfo(String userid){
+		TBaseUser user=this.loginservice.findTBaseUser(userid);
+		if(user!=null){
+			return user;
+		}else{
+			return null;
+		}
+	}
+	
 	//上传文件
 	@RequestMapping(value = "/uploadfile.do", method = RequestMethod.POST)
 	public void uploadUserFace(PrintWriter out, HttpServletRequest request,HttpSession session) {

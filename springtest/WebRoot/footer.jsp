@@ -24,7 +24,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    margin-top: -60px; 
 			    height: 60px;
 			    clear:both;
-			    background:#00A2CA} 
+			    background:#00A2CA;
+			    color:#FFF; 
+			    font-family:"\5FAE\8F6F\96C5\9ED1"; 
+			    font-size:16px
+			    } 
 	</style>
   </head>
   

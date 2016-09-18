@@ -18,4 +18,8 @@ public class TopicService {
 	public List<TBaseTopic>getTopic(){
 		return this.genericHibernateDao.find("from TBaseTopic t order by t.publishdate desc");
 	}
+	
+	public List<TBaseTopic>getMyTopic(String userid){
+		return this.genericHibernateDao.find("from TBaseTopic t where t.userid=? order by t.publishdate desc",new Object[]{userid});
+	}
 }
