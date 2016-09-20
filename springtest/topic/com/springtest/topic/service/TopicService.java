@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.springtest.common.dao.GenericDao;
+import com.springtest.topic.model.TBaseComment;
 import com.springtest.topic.model.TBaseTopic;
 
 @Service("topicservice")
@@ -21,5 +22,9 @@ public class TopicService {
 	
 	public List<TBaseTopic>getMyTopic(String userid){
 		return this.genericHibernateDao.find("from TBaseTopic t where t.userid=? order by t.publishdate desc",new Object[]{userid});
+	}
+	
+	public List<TBaseComment>getcomments(String id){
+		return this.genericHibernateDao.find("from TBaseComment t where t.fkid=?",new Object[]{id});
 	}
 }

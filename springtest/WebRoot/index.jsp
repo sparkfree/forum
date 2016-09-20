@@ -18,6 +18,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<link rel="stylesheet" type="text/css" href="<%=request.getContextPath() %>/css/index.css">
 	<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.8.3.js"></script>
+	<script type="text/javascript" src="<%=request.getContextPath() %>/js/common.js"></script>
 	<script type="text/javascript">
 	$(function(){
 		var range = 50;             //距下边界长度/单位px  
@@ -47,7 +48,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 dataType: "json",
                 success: function(data) {
                     $(data).each(function(n,value){
-                    	$("#topic").append("<div style='border:1px solid gray;margin-top:20px;height:100px;'><div style=''><a href=''>"+value.username+"</a>发布于"+value.publishdate+"</div><div style=''>"+value.topic+"</div><div>点赞数："+value.heart+"</div></div>");
+                    	//$("#topic").append("<div id='con"+n+"' style='border-bottom:1px solid gray;margin-bottom:20px;height:100px;'><div style='float:left;'><a href='' style='font-size:16px;'>"+value.username+"</a>&nbsp;&nbsp;发布于"+value.publishdate+"</div><div style='font-size:18px;'>"+value.topic+"<div style='float:right;margin-right:5px;'><a>点赞</a>："+value.heart+"&nbsp;&nbsp;<a>评论</a>："+3+"</div></div></div>");
+                    	//$("#con"+n).append("<div style='border:1px solid red;float:left;'><a style='font-size:16px;'>sum</a>:最喜欢的运动是跑步...</div>");
+                    	//$("#con"+n).append("<div style='border:1px solid red;float:left;'>我要说：</div>");
+                    	
+                    	$("#topic").append("<table id='content"+n+"' style='border-bottom:1px solid gray;margin-bottom:20px;height:100px;width:100%;'><tr><td style='width:30%;'><a style='font-size:16px;'>"+value.username+"</a>&nbsp;&nbsp;发布于："+value.publishdate+"</td><td style='width:50%;'>"+value.topic+"</td><td style='width:20%;'><a>点赞</a>&nbsp;"+value.heart+"&nbsp;&nbsp;<a>评论</a>"+3+"</td></tr></table>");
+						//查询评论
+                   		var jsondata={id:value.id};
+                   		var obj=_ajax.jsonajax("topicaction/getcomment.do",false,jsondata,"json");
+                   		$(obj).each(function(m,mvalue){
+                   			$("#content"+n).append("<tr><td></td><td><a style='font-size:16px;'>"+mvalue.username+"</a>&nbsp:&nbsp;"+mvalue.content+"</td><td></td></tr>");
+                   		});
+                   		
                     });
                 }, error: function(error) {
                 
@@ -60,13 +72,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
   	<jsp:include page="title.jsp"></jsp:include>
     <div style="">
-    	<div id="topic" style="border: 1px solid red;width: 75%;float:left;margin-left: 30px;">
+    	<div id="topic" style="border: 1px solid #00A2CA;width: 75%;float:left;margin-left: 30px;">
 <!--     		<div id="follow">this is a scroll test;<br/>    页面下拉自动加载内容</div>   -->
 <!--         <div style='border:1px solid tomato;margin-top:20px;color:#ac1;height:500' >hello world test DIV</div>   -->
+    		
     	</div>
-    	<div id="" style="border: 1px solid green;width: 20%;float:left;">
-    		最热话题榜
+    	<div id="" style="border: 1px solid #00A2CA;width: 20%;float:left;">
+    		<span style='font-size:16px;'>最热话题榜</span>
+    		
     	</div>
+    	
     </div>
     <jsp:include page="footer.jsp"></jsp:include>
   </body>

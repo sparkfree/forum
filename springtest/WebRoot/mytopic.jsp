@@ -61,10 +61,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 success: function(data) {
                 	if(data!=""){
                 		$(data).each(function(n,value){
-                    	$("#topic").append("<div style='border:1px solid gray;margin-top:20px;height:100px;'><div style=''><a href=''>"+value.username+"</a>发布于"+value.publishdate+"</div><div style=''>"+value.topic+"</div><div>点赞数："+value.heart+"</div></div>");
-                    });
+                    	//$("#topic").append("<div style='border:1px solid gray;margin-bottom:20px;height:100px;'><div style='float:left;'><a href='' style='font-size:16px;'>"+value.username+"</a>&nbsp;&nbsp;发布于"+value.publishdate+"</div><div style='font-size:18px;'>"+value.topic+"</div><div><a>点赞</a>:"+value.heart+"</div></div>");
+                   	 	$("#topic").append("<table style='border-bottom:1px solid gray;margin-bottom:20px;height:100px;width:100%;' id='content'><tr><td style='width:30%;'><a style='font-size:16px;'>"+value.username+"</a>&nbsp;&nbsp;发布于："+value.publishdate+"</td><td style='width:50%;'>"+value.topic+"</td><td style='width:20%;'><a>点赞</a>&nbsp;"+value.heart+"&nbsp;&nbsp;<a>评论</a>"+3+"</td></tr></table>");
+                   	 	});
                 	}else{
-                		$("#topic").append("<div style='border:1px solid gray;margin-top:20px;height:450px;'><div style=''><a href=''>您还没有任何动静!~~</a></div></div>");
+                		$("#topic").append("<div style='border:1px solid gray;margin-bottom:20px;height:450px;'><div style=''><a href=''>您还没有任何动静!~~</a></div></div>");
                 	}
                     
                 }, error: function(error) {
@@ -144,11 +145,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body>
     <jsp:include page="title.jsp"></jsp:include>
     <div style="">
-    	<div id="topic" style="border: 1px solid red;width: 75%;float:left;margin-left: 30px;">
+    	<div id="topic" style="border: 1px solid #00A2CA;width: 75%;float:left;margin-left: 30px;">
 <!--     		<div id="follow">this is a scroll test;<br/>    页面下拉自动加载内容</div>   -->
 <!--         <div style='border:1px solid tomato;margin-top:20px;color:#ac1;height:500' >hello world test DIV</div>   -->
     	</div>
-    	<div id="" style="border: 1px solid green;width: 20%;float:left;">
+    	<div id="" style="border: 1px solid #00A2CA;width: 20%;float:left;">
     		<div>我的主页</div>
     		<input name="userid" id="userid" type="hidden">
     		<div>
