@@ -62,7 +62,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 	if(data!=""){
                 		$(data).each(function(n,value){
                     	//$("#topic").append("<div style='border:1px solid gray;margin-bottom:20px;height:100px;'><div style='float:left;'><a href='' style='font-size:16px;'>"+value.username+"</a>&nbsp;&nbsp;发布于"+value.publishdate+"</div><div style='font-size:18px;'>"+value.topic+"</div><div><a>点赞</a>:"+value.heart+"</div></div>");
-                   	 	$("#topic").append("<table style='border-bottom:1px solid gray;margin-bottom:20px;height:100px;width:100%;' id='content'><tr><td style='width:30%;'><a style='font-size:16px;'>"+value.username+"</a>&nbsp;&nbsp;发布于："+value.publishdate+"</td><td style='width:50%;'>"+value.topic+"</td><td style='width:20%;'><a>点赞</a>&nbsp;"+value.heart+"&nbsp;&nbsp;<a>评论</a>"+3+"</td></tr></table>");
+                   	 	//$("#topic").append("<table style='border-bottom:1px solid gray;margin-bottom:20px;height:100px;width:100%;' id='content'><tr><td style='width:30%;'><a style='font-size:16px;'>"+value.username+"</a>&nbsp;&nbsp;发布于："+value.publishdate+"</td><td style='width:50%;'>"+value.topic+"</td><td style='width:20%;'><a>点赞</a>&nbsp;"+value.heart+"&nbsp;&nbsp;<a>评论</a>"+3+"</td></tr></table>");
+                   	 	
+                   	 	$("#topic").append("<table id='content"+n+"' style='border-bottom:1px solid gray;margin-bottom:20px;height:100px;width:100%;'><tr><td style='width:30%;'><a style='font-size:16px;'>"+value.username+"</a>&nbsp;&nbsp;发布于："+value.publishdate+"</td><td style='width:50%;'>"+value.topic+"</td><td style='width:20%;'><a>点赞</a>&nbsp;"+value.heart+"&nbsp;&nbsp;<a>评论</a>&nbsp;<span id='comnum"+n+"'></span></td></tr><tr><td></td></tr></table>");
+						//查询评论
+                   		var jsondata={id:value.id};
+                   		var obj=_ajax.jsonajax("topicaction/getcomment.do",false,jsondata,"json");
+                   		var comnum=0;
+                   		$(obj).each(function(m,mvalue){
+                   			comnum++;
+                   			$("#content"+n).append("<tr><td></td><td><a style='font-size:16px;'>"+mvalue.username+"</a>&nbsp:&nbsp;"+mvalue.content+"</td><td></td></tr>");
+                   		});
+                   		$("#comnum"+n).html(comnum);//评论数
                    	 	});
                 	}else{
                 		$("#topic").append("<div style='border:1px solid gray;margin-bottom:20px;height:450px;'><div style=''><a href=''>您还没有任何动静!~~</a></div></div>");

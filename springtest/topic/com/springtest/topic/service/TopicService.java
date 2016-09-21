@@ -27,4 +27,14 @@ public class TopicService {
 	public List<TBaseComment>getcomments(String id){
 		return this.genericHibernateDao.find("from TBaseComment t where t.fkid=?",new Object[]{id});
 	}
+	
+	public boolean addcomment(TBaseComment comm){
+		try {
+			this.genericHibernateDao.save(comm);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 }

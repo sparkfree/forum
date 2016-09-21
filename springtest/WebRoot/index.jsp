@@ -39,7 +39,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 num++;  
             }  
         });  
-        
+        loaddata();//加载数据
+		});
+		function loaddata(){
+			//
 			//ajax加载topic
 			$.ajax({
                 type: "POST",
@@ -52,20 +55,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     	//$("#con"+n).append("<div style='border:1px solid red;float:left;'><a style='font-size:16px;'>sum</a>:最喜欢的运动是跑步...</div>");
                     	//$("#con"+n).append("<div style='border:1px solid red;float:left;'>我要说：</div>");
                     	
-                    	$("#topic").append("<table id='content"+n+"' style='border-bottom:1px solid gray;margin-bottom:20px;height:100px;width:100%;'><tr><td style='width:30%;'><a style='font-size:16px;'>"+value.username+"</a>&nbsp;&nbsp;发布于："+value.publishdate+"</td><td style='width:50%;'>"+value.topic+"</td><td style='width:20%;'><a>点赞</a>&nbsp;"+value.heart+"&nbsp;&nbsp;<a>评论</a>"+3+"</td></tr></table>");
+                    	$("#topic").append("<table id='content"+n+"' style='border-bottom:1px solid gray;margin-bottom:20px;height:100px;width:100%;'><tr><td style='width:30%;'><a style='font-size:16px;'>"+value.username+"</a>&nbsp;&nbsp;发布于："+value.publishdate+"</td><td style='width:50%;'>"+value.topic+"</td><td style='width:20%;'><a>点赞</a>&nbsp;"+value.heart+"&nbsp;&nbsp;<a>评论</a>&nbsp;<span id='comnum"+n+"'></span></td></tr><tr><td></td><td>我要评论：<input name='com"+value.id+"' id='com"+value.id+"' type='text' value='' placeholder='说点什么吧~'/><input type='button' value='评论' onclick='tosay("+value.id+")'></td></tr></table>");
 						//查询评论
                    		var jsondata={id:value.id};
                    		var obj=_ajax.jsonajax("topicaction/getcomment.do",false,jsondata,"json");
+                   		var comnum=0;
                    		$(obj).each(function(m,mvalue){
+                   			comnum++;
                    			$("#content"+n).append("<tr><td></td><td><a style='font-size:16px;'>"+mvalue.username+"</a>&nbsp:&nbsp;"+mvalue.content+"</td><td></td></tr>");
                    		});
+                   		$("#comnum"+n).html(comnum);//评论数
                    		
                     });
-                }, error: function(error) {
-                
                 }
             });
-		});
+		}
+		function tosay(id){
+			var comment=$("#com"+id).val();
+			var jsondata={id:id,com:comment};
+            var result=_ajax.jsonajax("topicaction/addcomment.do",false,jsondata,"text");
+            if(result=='success'){
+            	alert('评论成功！');
+            	//loaddata();//重新加载数据
+            	//刷新当前窗口
+            	window.location.reload();
+            }else{
+            	alert('评论失败！');
+            }
+		}
 	</script>
   </head>
   
