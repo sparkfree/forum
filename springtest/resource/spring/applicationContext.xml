@@ -21,19 +21,14 @@
         location="classpath:application.properties" />
 
     <!-- dbcp数据连接池    org.apache.commons.dbcp.BasicDataSource-->
-    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-        destroy-method="close">
-        <!-- Connection Info -->
-        <property name="driverClass" value="${db.driverClass}"></property>
-		<property name="jdbcUrl" value="${db.url}"></property>
-		<property name="user" value="${db.user}"></property>
-		<property name="password" value="${db.password}"></property>
-		<property name="maxPoolSize" value="10"></property>
-		<property name="initialPoolSize" value="5"></property>
-		<property name="acquireIncrement" value="5"></property>
-<!-- 		<property name="apply_to_ddl" value="false"></property>   -->
-<!-- 		<property name="autoregister_listeners" value="false"></property>  -->
-    </bean>
+    
+    <bean id="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="${dataSource.driverClassName}" />
+		<property name="url" value="${dataSource.url}" />
+		<property name="username" value="${dataSource.username}" />
+		<property name="password" value="${dataSource.password}" />
+	</bean>
 
 	<!-- Hibernate 的SessionFactory -->
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
@@ -47,7 +42,7 @@
 		</property>
 		<property name="hibernateProperties">
 			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
 			</props>
 		</property>
