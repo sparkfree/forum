@@ -2,19 +2,16 @@
 <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <canvas></canvas>
-
 <style type="text/css">
 		body{
 			background-color: #f0ffff;
 			text-align: center;
 		}
 </style>
-	
-<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.8.3.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			$("#register").hide();
-			
 		});
 		function register(){
 			$("#login").hide();
@@ -24,21 +21,34 @@
 			$("#register").hide();
 			$("#login").show();
 		}
+		
+		function checkForm(){
+			var account = document.login.account.value;
+		   var msg = "";
+		   if(account.length==0){
+		       msg="[ 提示：用户名不能为空! ]";
+		       document.login.account.focus();
+		       alert(msg);
+			   return false;
+		   }
+		   var password = document.login.password.value;
+		   if(password.length==0){
+		       msg="[ 提示：密码不能为空! ]";
+		       document.login.password.focus();
+		       alert(msg);
+			   return false;
+		   }
+		   return true;
+		}
 	</script>
 	
 <div class="absolute-center">
-<!--     <h3>MOVE AROUND YOUR MOUSE!</h3> -->
-    
-<!--     <h5><i>You can adjust the options by modifying lines 11 to 29 of the JavaScript code<br>Please note that upon resizing the page, it will have to reload</i></h5> -->
-    
-<!--     <span id="close"><i class="fa fa-fw fa-times-circle-o"></i></span> -->
-
 		<div style="margin-left: 450px;">
   		<span id="btnlogin" onclick="login()">登录</span>&nbsp;&nbsp;
   		<span id="btnregister" onclick="register()">注册</span>
   		<br/><br/>
   		<div id="login">
-  			<form action="userlogin.do" method="post">
+  			<form action="userlogin.do" method="post" onsubmit="return checkForm()">
     		<span>账号</span>&nbsp;&nbsp;<input name="account" id="account" type="text"><br/><br/>
     		<span>密码</span>&nbsp;&nbsp;<input name="password" id="password" type="password"><br/><br/>
     		<input type="submit" value="登录">
@@ -224,5 +234,5 @@ window.onresize = function() {
 document.getElementById('close').onclick = function() {
     this.parentElement.style.visibility = 'hidden';
     this.parentElement.style.opacity = '0';
-}
+};
 </script>

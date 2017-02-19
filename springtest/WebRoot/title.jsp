@@ -20,7 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 
-  </head>
+  </head> 
   
   <body>
     <div>
@@ -29,7 +29,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		<li><a>话题</a></li>
     		<li><a>发现</a></li>
     		<li><a>消息</a></li>
+    		<li><a href="blog.jsp">博客</a></li>
     		<li><a href="mytopic.jsp">我的</a></li>
+    		<li><a href="/WEB-INF/page/login.jsp">写博客</a></li>
     	</ul>
     </div>
   </body>
