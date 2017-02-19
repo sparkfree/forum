@@ -8,7 +8,7 @@ import javax.persistence.Table;
  * ”√ªß±Ì t_base_user
  */
 @Entity
-@Table(name = "T_BASE_USER")
+@Table(name = "t_base_user")
 public class TBaseUser implements java.io.Serializable {
 
 	// Fields
