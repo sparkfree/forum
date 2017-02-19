@@ -22,12 +22,17 @@ public class LoginService {
 	 * @return
 	 */
 	public TBaseUser findTBaseUser(String account,String password){
+//		List list=this.genericHibernateDao.executSQL("select * from t_base_user where account='"+account+"' and password='"+password+"'");
 		List<TBaseUser>userlist=this.genericHibernateDao.find("from TBaseUser t where t.account=? and t.password=?",new Object[]{account,password});
 		if(userlist!=null&&userlist.size()>0){
 			return userlist.get(0);
 		}else{
 			return null;
 		}
+//		for (Object object : list) {
+//			System.out.println(object);
+//		}
+//		return null;
 	}
 	/**
 	 * 查找用户信息根据userid
