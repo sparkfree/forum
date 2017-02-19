@@ -15,7 +15,7 @@ import com.springtest.common.util.JsonDateSerializer;
  * ª∞Ã‚±Ì t_base_topic
  */
 @Entity
-@Table(name = "T_BASE_TOPIC")
+@Table(name = "t_base_topic")
 public class TBaseTopic implements java.io.Serializable {
 
 	// Fields

@@ -15,7 +15,7 @@ import com.springtest.common.util.JsonDateSerializer;
  * ÆÀÂÛ±í t_base_comment
  */
 @Entity
-@Table(name = "T_BASE_COMMENT")
+@Table(name = "t_base_comment")
 public class TBaseComment implements java.io.Serializable {
 
 	// Fields
