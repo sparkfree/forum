@@ -39,25 +39,21 @@
 	</filter-mapping>
 	
 	<!-- 过滤器配置 -->
-	<!--  
+	<!-- /login.do,/userlogin.do,/fileupload.jsp,/uploadfile.do,/js/,/scroll.jsp -->
 	 <filter>
 		<filter-name>LoginFilter</filter-name>
 		<filter-class>com.springtest.common.filter.LoginFilter</filter-class>
 		<init-param>
 			<param-name>notFilterDir</param-name>
 			<param-value>
-			/login.do,/userlogin.do,/fileupload.jsp,/uploadfile.do,/js/,/scroll.jsp
 			</param-value>
 		</init-param>
 	</filter>
-	-->
 	<!-- Filter映射 -->
-	<!-- 
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	-->
 	<!-- 配置spring mvc的核心控制器DispatcherServlet -->
 	<!-- 这样配置把所有.do的请求转发到DispatcherServlet控制中心,DispatcherServlet会默认加载 wib-inf 
         下的 dispatcherServlet-servlet.xml,根据里面的配置再到相应的controller -->
