@@ -20,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
  * 
  * @author 李帅康
  * @since 2016.6.16
+ * 
  */
 public class LoginFilter implements Filter {
 	private String notFilterDir = "";// 不在过滤范围之内
@@ -28,14 +29,12 @@ public class LoginFilter implements Filter {
 
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 		notFilterDir = null;
 	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		// TODO Auto-generated method stub
 		try {
 			HttpServletRequest req = (HttpServletRequest) request;
 			HttpServletResponse res = (HttpServletResponse) response;
@@ -49,18 +48,15 @@ public class LoginFilter implements Filter {
 					return;
 				}
 			}
-
-			HttpSession session = req.getSession();
+			HttpSession session = req.getSession();//获取session对象
 			if (session.getAttribute("user") == null) {
 				res.sendRedirect(this.filterConfig.getServletContext().getContextPath() + "/login.do");
 			} else {
 				chain.doFilter(request, response);
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
