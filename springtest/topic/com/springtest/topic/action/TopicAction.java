@@ -3,6 +3,7 @@ package com.springtest.topic.action;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,12 @@ public class TopicAction {
 	@ResponseBody
 	public List<TBaseTopic>getTopic(){
 		return this.topicservice.getTopic();
+	}
+	
+	@RequestMapping(value = "/gettopics.do", method = RequestMethod.POST)
+	@ResponseBody
+	public List<TBaseTopic>gettopics(int page,int rows){
+		return this.topicservice.getTopics(page,rows);
 	}
 	
 	@RequestMapping(value = "/getmytopic.do", method = RequestMethod.POST)

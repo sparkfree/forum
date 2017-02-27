@@ -28,8 +28,7 @@ public class TBaseTopic implements java.io.Serializable {
 	private String userid;//用户ID
 	private String username;//用户名
 	public Date publishdate;//发布时间
-	// Constructors
-	/** default constructor */
+	
 	public TBaseTopic() {
 	}
 

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.springtest.common.dao.GenericDao;
 import com.springtest.topic.model.TBaseComment;
@@ -18,6 +19,13 @@ public class TopicService {
 	
 	public List<TBaseTopic>getTopic(){
 		return this.genericHibernateDao.find("from TBaseTopic t order by t.publishdate desc");
+	}
+	
+	@Transactional
+	public List<TBaseTopic>getTopics(int page,int rows){
+		List list=this.genericHibernateDao.find("from TBaseTopic t order by t.publishdate desc",page,rows);
+		return list;
+		//return this.genericHibernateDao.find("from TBaseTopic t order by t.publishdate desc", rows, page);
 	}
 	
 	public List<TBaseTopic>getMyTopic(String userid){
