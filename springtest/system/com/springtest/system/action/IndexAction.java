@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexAction {
 	@RequestMapping("/index.do")
 	public String urlIndex(HttpServletRequest request, HttpSession session) {
-		if (session.getAttribute("user") == null) {//
-			return "../../login";
+		if (session.getAttribute("user") == null) {
+			//return "../../login";
+			return "../../index";
 		} else {
 			return "../../index";
 		}
@@ -23,6 +24,7 @@ public class IndexAction {
 	 */
 	@RequestMapping("/login.do")
 	public String urlLogin(HttpServletRequest request) {
-		return "../page/system/login";
+		//return "../page/system/login";//»Øµ½µÇÂ¼Ò³Ãæ
+		return "../../index";
 	}
 }
