@@ -3,7 +3,6 @@ package com.springtest.topic.action;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +38,29 @@ public class TopicAction {
 		return this.topicservice.getTopics(page,rows);
 	}
 	
+	@RequestMapping(value = "/gettopicsum.do", method = RequestMethod.POST)
+	@ResponseBody
+	public Integer gettopicsum(){
+		return this.topicservice.gettopicsum();
+	}
+	
+	@RequestMapping(value = "/updatehearts.do", method = RequestMethod.POST)
+	@ResponseBody
+	public void updatehearts(String id,String heart){
+		this.topicservice.updatehearts(id,heart);
+	}
+	
 	@RequestMapping(value = "/getmytopic.do", method = RequestMethod.POST)
 	@ResponseBody
 	public List<TBaseTopic>getMyTopic(HttpSession session){
 		TBaseUser user=(TBaseUser)session.getAttribute("user");
 		return this.topicservice.getMyTopic(user.getUserid());
+	}
+	
+	@RequestMapping(value = "/getHotTopic.do", method = RequestMethod.POST)
+	@ResponseBody
+	public List<TBaseTopic>getHotTopic(){
+		return this.topicservice.getHotTopic();
 	}
 	
 	@RequestMapping(value = "/getcomment.do", method = RequestMethod.POST)
