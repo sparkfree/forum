@@ -35,13 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="${pageContext.request.contextPath}/resources/layui/lay/modules/laypage.js" charset="utf-8"></script>
 	<script type="text/javascript">
 		$(function(){
-			$("#account").focus();
-			document.onkeydown = function(e){ 
-			    var ev = document.all ? window.event : e;
-			    if(ev.keyCode==13) {
-					login();//登录
-	     		}
-			}
+			
 		});
 		
 		//加载layui模块
@@ -63,22 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				layer.msg('Hello,注册成功！');
 			}else if(data=="register_fail"){
 				//注册失败
-				layer.msg('Wow,注册失败！');
-			}
-		}
-		
-		//登录
-		function login(){
-			var nickname=$("#account").val();
-			var password=$("#password").val();
-			var jsondata={nickname:nickname,password:password};
-			var data=_ajax.jsonajax("useraction/userlogin.do",false,jsondata,"text");
-			if(data=="login_success"){
-				//注册成功
-				layer.msg('Hello,登录成功！');
-			}else if(data=="login_fail"){
-				//注册失败
-				layer.msg('Wow,登录失败！');
+				layer.msg('Hello,注册失败！');
 			}
 		}
 		
@@ -115,13 +94,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	<div id="register_box" style="width: 30%;height: 65%;margin: 50px auto;">
     		<div style="">
     		<div style="">
-    			<span style="font-size: 18px;"><a href="login.jsp" style="color: red;">登录</a></span>&nbsp;&nbsp;
-    			<span><a href="register.jsp">注册</a></span>
+    			<span><a href="login.jsp">登录</a></span>&nbsp;&nbsp;
+    			<span style="font-size: 18px;"><a href="register.jsp" style="color: red;">注册</a></span>
     		</div>
     		<br>
-   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/nickname.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="account" id="account" type="text" placeholder="你的昵称"/></div><br>
-   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/password.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="password" id="password" type="password" placeholder="输入密码"/></div><br>
-   				<div style="margin-left: 50px;"><button style="width: 230px;height:38px;background: #32CD32;border: none;" onclick="login();"><span style="color: white;font-size: 18px;">登录</span></button></div>
+   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/nickname.png"/>&nbsp;&nbsp;<input onblur="b_nickname();" style="width: 200px;height: 32px;" name="account" id="account" type="text" placeholder="你的昵称"/></div><br>
+   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/phone.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="phone" id="phone" type="text" placeholder="手机号"/></div><br>
+   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/password.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="password" id="password" type="text" placeholder="设置密码"/></div><br>
+   				<div style="margin-left: 50px;"><button style="width: 230px;height:38px;background: #32CD32;border: none;" onclick="register();"><span style="color: white;font-size: 18px;">注册</span></button></div>
     		</div>
     	</div>
     </div>
