@@ -50,7 +50,7 @@ public class LoginFilter implements Filter {
 			}
 			HttpSession session = req.getSession();//获取session对象
 			if (session.getAttribute("user") == null) {
-				res.sendRedirect(this.filterConfig.getServletContext().getContextPath() + "/login.do");
+				//res.sendRedirect(this.filterConfig.getServletContext().getContextPath() + "/index.jsp");//login.do
 			} else {
 				chain.doFilter(request, response);
 			}
