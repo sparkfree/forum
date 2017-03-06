@@ -39,18 +39,21 @@ public class LoginFilter implements Filter {
 			HttpServletRequest req = (HttpServletRequest) request;
 			HttpServletResponse res = (HttpServletResponse) response;
 			String uri = req.getRequestURI();// 请求路径
-
+			if(uri.indexOf("/index.jsp")>-1||uri.indexOf("/register.jsp")>-1||uri.indexOf("/login.jsp")>-1){
+				chain.doFilter(request, response);//继续此次请求
+				return;
+			}
 			String[] notFilterDirs = notFilterDir.split(",");
 			for (int i = 0; i < notFilterDirs.length; i++) {
 				String notFilterDirValue = notFilterDirs[i];
 				if (uri.indexOf(notFilterDirValue) != -1) {
-					chain.doFilter(request, response);
+					chain.doFilter(request, response);//继续此次请求
 					return;
 				}
 			}
 			HttpSession session = req.getSession();//获取session对象
 			if (session.getAttribute("user") == null) {
-				//res.sendRedirect(this.filterConfig.getServletContext().getContextPath() + "/index.jsp");//login.do
+				res.sendRedirect(this.filterConfig.getServletContext().getContextPath() + "/index.jsp");//login.do
 			} else {
 				chain.doFilter(request, response);
 			}
