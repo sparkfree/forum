@@ -6,8 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.springtest.common.util.JsonDateSerializer;
 
@@ -23,13 +25,16 @@ public class TBaseTopic implements java.io.Serializable {
 	
 	private String id;//主键ID
 	private String topic;//话题
+	private Integer comment;//点赞数
 	private Integer heart;//点赞数
 	private String image;//图片资源
 	private String userid;//用户ID
-	private String username;//用户名
-	public Date publishdate;//发布时间
+	private String nickname;//昵称
+	private Date publishdate;//发布时间
+	private String publishdatestr;
 	
 	public TBaseTopic() {
+		
 	}
 
 	/** minimal constructor */
@@ -38,13 +43,14 @@ public class TBaseTopic implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TBaseTopic(String id,String topic,Integer heart,String image,String userid,String username,Date publishdate) {
+	public TBaseTopic(String id,String topic,Integer comment,Integer heart,String image,String userid,String nickname,Date publishdate) {
 		this.userid = userid;
 		this.topic=topic;
+		this.comment=comment;
 		this.heart=heart;
 		this.image=image;
 		this.userid=userid;
-		this.username=username;
+		this.nickname=nickname;
 		this.publishdate=publishdate;
 	}
 
@@ -68,9 +74,28 @@ public class TBaseTopic implements java.io.Serializable {
 		this.topic = topic;
 	}
 	
+	@Column(name = "COMMENT",precision=22,scale=0)
+	public Integer getComment() {
+		if(comment==null){
+			this.comment=0;
+			return comment;
+		}else{
+			return comment;
+		}
+	}
+
+	public void setComment(Integer comment) {
+		this.comment = comment;
+	}
+
 	@Column(name = "HEART",precision=22,scale=0)
 	public Integer getHeart() {
-		return heart;
+		if(this.heart==null){
+			this.heart=0;
+			return heart;
+		}else{
+			return heart;
+		}
 	}
 
 	public void setHeart(Integer heart) {
@@ -93,13 +118,14 @@ public class TBaseTopic implements java.io.Serializable {
 	public void setUserid(String userid) {
 		this.userid = userid;
 	}
-	@Column(name = "USERNAME", length = 30)
-	public String getUsername() {
-		return username;
+	
+	@Column(name = "NICKNAME", length = 30)
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	@JsonSerialize(using=JsonDateSerializer.class)
@@ -111,5 +137,15 @@ public class TBaseTopic implements java.io.Serializable {
 	public void setPublishdate(Date publishdate) {
 		this.publishdate = publishdate;
 	}
+
+	@Transient
+	public String getPublishdatestr() {
+		return publishdatestr;
+	}
+
+	public void setPublishdatestr(String publishdatestr) {
+		this.publishdatestr = publishdatestr;
+	}
+	
 	
 }

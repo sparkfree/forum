@@ -34,6 +34,16 @@ public class TopicService {
 		return ((BigInteger)this.genericHibernateDao.getObjectBySQL("select count(id) from t_base_topic")).intValue();
 	}
 	
+	/**
+	 * 查询评论总数
+	 * @param fkid
+	 * @return
+	 */
+	@Transactional
+	public Integer getcommentsum(String fkid){
+		return ((BigInteger)this.genericHibernateDao.getObjectBySQL("select count(id) from t_base_comment where fkid=?",new Object[]{fkid})).intValue();
+	}
+	
 	@Transactional
 	public void updatehearts(String id,String heart){
 		boolean result=this.genericHibernateDao.executSQL("update t_base_topic set heart=? where id=?", new Object[]{heart,id});
@@ -60,5 +70,26 @@ public class TopicService {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	@Transactional
+	public TBaseTopic getTopicById(String id)throws Exception{
+		return (TBaseTopic)this.genericHibernateDao.get(TBaseTopic.class, id);
+	}
+	
+	@Transactional
+	public List<TBaseTopic>getAllTopic(){
+		return this.genericHibernateDao.find("from TBaseTopic");
+	}
+	
+	@Transactional
+	public List<TBaseComment>getcommentbyid(String id,int page,int rows){
+		return this.genericHibernateDao.find("from TBaseComment t where t.fkid=?",new Object[]{id},page,rows);
+	}
+	
+	@Transactional
+	public void updatecomment(String id){
+		int comnum=((BigInteger)this.genericHibernateDao.getObjectBySQL("select count(id) from t_base_comment where fkid=?",new Object[]{id})).intValue();//查询评论数
+		this.genericHibernateDao.executSQL("update t_base_topic t set t.comment=? where t.id=?", new Object[]{comnum,id});
 	}
 }
