@@ -1,5 +1,6 @@
 package com.springtest.system.action;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,26 @@ public class UserAction {
 	@Qualifier("userservice")
 	private UserService userservice;
 	
+	/**
+	 * my profile
+	 * @param request
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value="/myprofile.do",method=RequestMethod.GET)
+	public String urlLogin(HttpServletRequest request,HttpSession session) {
+		TBaseUser user=(TBaseUser)session.getAttribute("user");
+		if(user==null){
+			return "../../login";//跳转至登录页面（因为spring-servlet.xml文件中配置的路径是/WEB-INF/page/）
+		}else{
+			return "/system/myprofile";
+		}
+	}
+	
 	@RequestMapping(value = "/userregister.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String userregister(String nickname,String phone,String password){
-		boolean result=this.userservice.userregister(nickname, phone, password);
+	public String userregister(HttpSession session,String nickname,String phone,String password){
+		boolean result=this.userservice.userregister(session,nickname, phone, password);
 		if(result){
 			return "register_success";
 		}else{

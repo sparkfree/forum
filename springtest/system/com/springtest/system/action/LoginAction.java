@@ -50,12 +50,12 @@ public class LoginAction {
 	//×¢²á
 	@RequestMapping("/userregister.do")
 	public void register(PrintWriter out,HttpServletRequest request,HttpServletResponse response,HttpSession session){
-		String account=request.getParameter("account");
+		String nickname=request.getParameter("account");
 		String password=request.getParameter("password");
 		String phonenumber=request.getParameter("phonenumber");
 		TBaseUser user=new TBaseUser();
 		user.setUserid(DateUtil.FormatDateTimemi());
-		user.setAccount(account);//ÕË»§
+		user.setNickname(nickname);//ÕË»§
 		user.setPassword(password);//ÃÜÂë
 		user.setPhonenumber(phonenumber);//µç»°ºÅÂë
 		Boolean result=this.loginservice.addTBaseUser(user);

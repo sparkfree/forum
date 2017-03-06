@@ -20,7 +20,7 @@ public class TBaseUser implements java.io.Serializable {
 	
 	private String userid;//主键ID
 	private String username;//用户名
-	private String account;//账户
+	private String nickname;//昵称
 	private String password;//密码
 	private String phonenumber;//电话号码
 	private String email;//邮箱
@@ -38,10 +38,10 @@ public class TBaseUser implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TBaseUser(String userid, String username, String account,String password,String phonenumber,String email,String address,String signin,String hobby) {
+	public TBaseUser(String userid, String username, String nickname,String password,String phonenumber,String email,String address,String signin,String hobby) {
 		this.userid = userid;
 		this.username = username;
-		this.account = account;
+		this.nickname = nickname;
 		this.password = password;
 		this.phonenumber=phonenumber;
 		this.email=email;
@@ -70,13 +70,13 @@ public class TBaseUser implements java.io.Serializable {
 		this.username = username;
 	}
 
-	@Column(name = "ACCOUNT", length = 30)
-	public String getAccount() {
-		return this.account;
+	@Column(name = "NICKNAME", length = 30)
+	public String getNickname() {
+		return nickname;
 	}
 
-	public void setAccount(String account) {
-		this.account = account;
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 	@Column(name = "PASSWORD", length = 30)
