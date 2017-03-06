@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script src="${pageContext.request.contextPath}/resources/layui/lay/modules/laypage.js" charset="utf-8"></script>
 	<script type="text/javascript">
 		$(function(){
-			$("#account").focus();
+			$("#nickname").focus();
 			document.onkeydown = function(e){ 
 			    var ev = document.all ? window.event : e;
 			    if(ev.keyCode==13) {
@@ -53,7 +53,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   		
   		//注册
 		function register(){
-			var nickname=$("#account").val();
+			var nickname=$("#nickname").val();
 			var phone=$("#phone").val();
 			var password=$("#password").val();
 			var jsondata={nickname:nickname,phone:phone,password:password};
@@ -69,13 +69,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 		//登录
 		function login(){
-			var nickname=$("#account").val();
+			var nickname=$("#nickname").val();
 			var password=$("#password").val();
 			var jsondata={nickname:nickname,password:password};
 			var data=_ajax.jsonajax("useraction/userlogin.do",false,jsondata,"text");
 			if(data=="login_success"){
 				//注册成功
 				layer.msg('Hello,登录成功！');
+				location.href="index.jsp";//跳转至index.jsp
 			}else if(data=="login_fail"){
 				//注册失败
 				layer.msg('Wow,登录失败！');
@@ -84,7 +85,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 		//validate
 		function b_nickname(){
-			var nickname=$("#account").val();
+			var nickname=$("#nickname").val();
 			if(nickname==undefined||nickname==""){
 				layer.msg('昵称不能为空！');
 				return false;
@@ -119,7 +120,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     			<span><a href="register.jsp">注册</a></span>
     		</div>
     		<br>
-   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/nickname.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="account" id="account" type="text" placeholder="你的昵称"/></div><br>
+   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/nickname.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="nickname" id="nickname" type="text" placeholder="你的昵称"/></div><br>
    				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/password.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="password" id="password" type="password" placeholder="输入密码"/></div><br>
    				<div style="margin-left: 50px;"><button style="width: 230px;height:38px;background: #32CD32;border: none;" onclick="login();"><span style="color: white;font-size: 18px;">登录</span></button></div>
     		</div>

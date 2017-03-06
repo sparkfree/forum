@@ -4,7 +4,6 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-<html>
   <head>
     <title>多米论坛</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.8.3.js"></script>
@@ -22,8 +21,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		.topic:HOVER{
 			color: green;
 		}
+		.signin{
+			cursor: pointer;
+		}
 	</style>
 	<script>
+	var user="";
+	$(function(){
+		user = "${sessionScope.user}";//user
+		if(user!=""){//用户已经登录
+			$(".sign").hide();
+			var nickname="${sessionScope.user.nickname}";
+			$("#usernick").html(nickname);	
+			$(".signin").show();
+		}
+	});
 		function hitheart(ele,id){
 			ele.src="${pageContext.request.contextPath}/resources/images/hot_heart.png";//点赞后更换hot_heart图标
 			var heart_num=$("#heart_num"+id).val();
@@ -35,8 +47,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		
 		//话题详情
-		function topic_show(){
-			alert();
+		function topic_show(tid){
+			location.href="topicaction/topiccomment.do?tid="+tid;//通过controller跳转至web-inf中的页面
 		}
 		
 		layui.use('element', function(){
@@ -106,7 +118,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         var result=_ajax.jsonajax("topicaction/gettopics.do",false,jsondata,"json");
         var str='';
         $(result).each(function(index,value){
-        	str+='<li onclick=\'topic_show();\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'></span></div><hr>';
+        	str+='<li onclick=\'topic_show('+value.id+');\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
         });
         return str;
 	  };
@@ -115,17 +127,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	
   	var hotdata=_ajax.jsonajax("topicaction/getHotTopic.do",false,null,"json");
   	var renderhot=function(){
-  		var str='';
+  		var str='<li style=\'color:red;\'>hot</li><br>';
   		$(hotdata).each(function(index,value){
-        	str+='<li onclick=\'topic_show();\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'></span></div><hr>';
+        	str+='<li onclick=\'topic_show('+value.id+');\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
         });
         return str;
   	};
   	
   	var rendertopic=function(){
-  		var str='';
+  		var str='<li style=\'color:red;\'>recent</li><br>';
   		$(hotdata).each(function(index,value){
-        	str+='<li onclick=\'topic_show();\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'></span></div><hr>';
+        	str+='<li onclick=\'topic_show('+value.id+');\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
         });
         return str;
   	};
@@ -142,6 +154,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  });
   
 });
+	
+	//my profile
+	/*function mytopic(){
+		if(user==""){//用户未登录
+			layer.msg('小伙伴，要先登录哦！');
+			setTimeout(function (){
+				location.href="login.jsp";
+	   		}, 1000); 
+			return;
+		}
+	}*/
+	
 	</script>
   </head>
   
@@ -166,27 +190,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </dl>
   </li>
   <li class="layui-nav-item"><a href="">社区</a></li>
+  <li class="layui-nav-item" style="cursor: pointer;"><a href="useraction/myprofile.do">我的</a></li>
   
-  <li class="layui-nav-item" style="float: right;"><a href="login.jsp">登录</a></li>
-  <li class="layui-nav-item" style="float: right;"><a href="register.jsp">注册</a></li>
+  <li class="layui-nav-item sign" style="float: right;"><a href="login.jsp">登录</a></li>
+  <li class="layui-nav-item sign" style="float: right;"><a href="register.jsp">注册</a></li>
+  <li class="layui-nav-item signin" style="float: right;display: none;">Hello,<span id="usernick"></span></li>
 </ul>
 
 <ul id="biuuu_city_list" style="margin: 25px;width: 60%;float: left;cursor: pointer;"></ul>
 <ul id="hot_list" style="margin: 25px;width: 20%;;float:left;">
-	<li>今日头条</li>
-	<li>今日头条</li>
-	<li>今日头条</li>
-	<li>今日头条</li>
-	<li>今日头条</li>
-	<li>今日头条</li>
+
 </ul> 
 <ul id="recent_list" style="margin: 25px;width: 20%;float: left;">
-	<li>今日头条</li>
-	<li>今日头条</li>
-	<li>今日头条</li>
-	<li>今日头条</li>
-	<li>今日头条</li>
-	<li>今日头条</li>
+	
 </ul>
 <div id="blog_content" style="margin: 25px;float: left;clear: both;"></div>
  

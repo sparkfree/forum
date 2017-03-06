@@ -55,6 +55,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			if(data=="register_success"){
 				//注册成功
 				layer.msg('Hello,注册成功！');
+				//跳转到index.jsp页面
+				location.href="index.jsp";
 			}else if(data=="register_fail"){
 				//注册失败
 				layer.msg('Hello,注册失败！');
@@ -73,7 +75,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			if(data=="isexist"){
 				layer.msg('昵称已经存在！');
 			}else if(data=="notexist"){
-				layer.msg('昵称不存在！');
+				//layer.msg('昵称不存在！');
 			}
 		}
 		//validate phone
@@ -100,7 +102,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		<br>
    				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/nickname.png"/>&nbsp;&nbsp;<input onblur="b_nickname();" style="width: 200px;height: 32px;" name="account" id="account" type="text" placeholder="你的昵称"/></div><br>
    				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/phone.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="phone" id="phone" type="text" placeholder="手机号"/></div><br>
-   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/password.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="password" id="password" type="text" placeholder="设置密码"/></div><br>
+   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/password.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="password" id="password" type="password" placeholder="设置密码"/></div><br>
    				<div style="margin-left: 50px;"><button style="width: 230px;height:38px;background: #32CD32;border: none;" onclick="register();"><span style="color: white;font-size: 18px;">注册</span></button></div>
     		</div>
     	</div>
