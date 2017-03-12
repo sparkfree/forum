@@ -34,6 +34,11 @@ public class TopicService {
 		return ((BigInteger)this.genericHibernateDao.getObjectBySQL("select count(id) from t_base_topic")).intValue();
 	}
 	
+	@Transactional
+	public Integer getmytopicsum(String userid){
+		return ((BigInteger)this.genericHibernateDao.getObjectBySQL("select count(id) from t_base_topic where userid='"+userid+"'")).intValue();
+	}
+	
 	/**
 	 * 查询评论总数
 	 * @param fkid
@@ -49,13 +54,19 @@ public class TopicService {
 		boolean result=this.genericHibernateDao.executSQL("update t_base_topic set heart=? where id=?", new Object[]{heart,id});
 	}
 	
-	public List<TBaseTopic>getMyTopic(String userid){
-		return this.genericHibernateDao.find("from TBaseTopic t where t.userid=? order by t.publishdate desc",new Object[]{userid});
+	@Transactional
+	public List<TBaseTopic>getMyTopic(String userid,int page,int rows){
+		return this.genericHibernateDao.find("from TBaseTopic t where t.userid=? order by t.publishdate desc",new Object[]{userid},page,rows);
 	}
 	
 	@Transactional
 	public List<TBaseTopic>getHotTopic(){
-		return this.genericHibernateDao.find("from TBaseTopic t order by t.heart desc",0,3);
+		return this.genericHibernateDao.find("from TBaseTopic t order by t.heart desc",0,5);
+	}
+	
+	@Transactional
+	public List<TBaseTopic>getRecentTopic(){
+		return this.genericHibernateDao.find("from TBaseTopic t order by t.publishdate desc",0,5);
 	}
 	
 	public List<TBaseComment>getcomments(String id){
@@ -91,5 +102,28 @@ public class TopicService {
 	public void updatecomment(String id){
 		int comnum=((BigInteger)this.genericHibernateDao.getObjectBySQL("select count(id) from t_base_comment where fkid=?",new Object[]{id})).intValue();//查询评论数
 		this.genericHibernateDao.executSQL("update t_base_topic t set t.comment=? where t.id=?", new Object[]{comnum,id});
+	}
+	
+	@Transactional
+	public Boolean addtopic(TBaseTopic topic){
+		try {
+			this.genericHibernateDao.saveOrUpdate(topic);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	@Transactional
+	public Boolean deletetopic(String tid){
+		try {
+			this.genericHibernateDao.executSQL("delete from t_base_topic where id=?", new Object[]{tid});
+			this.genericHibernateDao.executSQL("delete from t_base_comment where fkid=?", new Object[]{tid});
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 }

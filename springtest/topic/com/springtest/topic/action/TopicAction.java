@@ -82,15 +82,28 @@ public class TopicAction {
 	
 	@RequestMapping(value = "/getmytopic.do", method = RequestMethod.POST)
 	@ResponseBody
-	public List<TBaseTopic>getMyTopic(HttpSession session){
+	public List<TBaseTopic>getMyTopic(HttpSession session,int page,int rows){
 		TBaseUser user=(TBaseUser)session.getAttribute("user");
-		return this.topicservice.getMyTopic(user.getUserid());
+		return this.topicservice.getMyTopic(user.getUserid(),page,rows);
+	}
+	
+	@RequestMapping(value = "/getmytopicsum.do", method = RequestMethod.POST)
+	@ResponseBody
+	public Integer getmytopicsum(HttpSession session){
+		TBaseUser user=(TBaseUser)session.getAttribute("user");
+		return this.topicservice.getmytopicsum(user.getUserid());
 	}
 	
 	@RequestMapping(value = "/getHotTopic.do", method = RequestMethod.POST)
 	@ResponseBody
 	public List<TBaseTopic>getHotTopic(){
 		return this.topicservice.getHotTopic();
+	}
+	
+	@RequestMapping(value = "/getRecentTopic.do", method = RequestMethod.POST)
+	@ResponseBody
+	public List<TBaseTopic>getRecentTopic(){
+		return this.topicservice.getRecentTopic();
 	}
 	
 	@RequestMapping(value = "/getcomment.do", method = RequestMethod.POST)
@@ -114,22 +127,14 @@ public class TopicAction {
 		for (TBaseTopic tBaseTopic : topiclist) {
 			tBaseTopic.setPublishdatestr(DateUtil.formatDate(tBaseTopic.getPublishdate(), "yyyy-MM-dd HH:mm"));
 		}
-		String str=JSONObject.fromObject(topiclist.get(0)).toString();
-		String strs=JSONArray.fromObject(topiclist).toString();
-		String s="";
-		try {
-			s=URLDecoder.decode(str,"UTF-8");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		//return s;
-		response.setContentType("text/json;charset=utf-8");
+		JSONArray array=JSONArray.fromObject(topiclist);
+		response.setContentType("text/json;charset=utf-8");//…Ë÷√±‡¬Î
 		PrintWriter out=null;
 		try {
 			out = response.getWriter();
 		} catch (Exception e) {
 		}
-		out.print(strs);
+		out.print(array.toString());
 	}
 	
 	/**
@@ -165,6 +170,35 @@ public class TopicAction {
 	@ResponseBody	
 	public void updatecomment(String id){
 		this.topicservice.updatecomment(id);
+	}
+	
+	@RequestMapping(value="/addtopic.do",method=RequestMethod.POST)
+	@ResponseBody	
+	public String addtopic(HttpSession session,String comment){
+		TBaseUser user=(TBaseUser)session.getAttribute("user");
+		TBaseTopic topic=new TBaseTopic();
+		topic.setId(DateUtil.FormatDateTimemi());
+		topic.setTopic(comment);
+		topic.setComment(0);
+		topic.setHeart(0);
+		topic.setUserid(user.getUserid());
+		topic.setNickname(user.getNickname());
+		topic.setPublishdate(new Date());
+		if(this.topicservice.addtopic(topic)){
+			return "success";
+		}else{
+			return "fail";
+		}
+	}
+	
+	@RequestMapping(value="/deletetopic.do",method=RequestMethod.POST)
+	@ResponseBody
+	public String deletetopic(String tid){
+		if(this.topicservice.deletetopic(tid)){
+			return "success";
+		}else{
+			return "fail";
+		}
 	}
 	
 }
