@@ -71,4 +71,33 @@ public class UserAction {
 		}
 	}
 	
+	/**
+	 * 更新用户信息
+	 * @param userid
+	 * @param nickname
+	 * @param username
+	 * @param phone
+	 * @param email
+	 * @param hobby
+	 * @return
+	 */
+	@RequestMapping(value = "/updateuser.do", method = RequestMethod.POST)
+	@ResponseBody
+	public String updateuser(HttpSession session,String userid,String nickname,String username,String phone,String email,String hobby){
+		TBaseUser user=this.userservice.findUserById(userid);
+		if(user!=null){
+			user.setNickname(nickname);
+			user.setUsername(username);
+			user.setPhonenumber(phone);
+			user.setEmail(email);
+			user.setHobby(hobby);
+		}
+		if(this.userservice.updateuser(user)){
+			session.setAttribute("user", user);//将session中的user信息更新
+			return "success";
+		}else{
+			return "fail";
+		}
+	}
+	
 }
