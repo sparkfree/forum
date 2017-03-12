@@ -46,7 +46,7 @@
 		<init-param>
 			<param-name>notFilterDir</param-name>
 			<param-value>
-			/getcommentsum.do,/getcommentbyid.do,/topicjson.do,/gettopicbyid.do,/topiccomment.do,/myprofile.do,/userlogin.do,/userregister.do,/css/,/js/,/images/,/login.do,/resources/,/gettopics.do,/gettopicsum.do,/getHotTopic.do
+			/getRecentTopic.do,/getcommentsum.do,/getcommentbyid.do,/topicjson.do,/gettopicbyid.do,/topiccomment.do,/myprofile.do,/userlogin.do,/userregister.do,/css/,/js/,/images/,/login.do,/resources/,/gettopics.do,/gettopicsum.do,/getHotTopic.do
 			</param-value>
 		</init-param>
 	</filter>

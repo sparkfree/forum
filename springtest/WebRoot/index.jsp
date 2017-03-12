@@ -60,49 +60,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
 		
 		layui.use(['laypage', 'layer'], function(){
-		  var laypage = layui.laypage,layer = layui.layer;
-		  //测试数据
-		  var data = [
-		    '北京',
-		    '上海',
-		    '广州',
-		    '深圳',
-		    '杭州',
-		    '长沙',
-		    '合肥',
-		    '宁夏',
-		    '成都',
-		    '西安',
-		    '南昌',
-		    '上饶',
-		    '沈阳',
-		    '济南',
-		    '厦门',
-		    '福州',
-		    '九江',
-		    '宜春',
-		    '赣州',
-		    '宁波',
-		    '绍兴',
-		    '无锡',
-		    '苏州',
-		    '徐州',
-		    '东莞',
-		    '佛山',
-		    '中山',
-		    '成都',
-		    '武汉',
-		    '青岛',
-		    '天津',
-		    '重庆',
-		    '南京',
-		    '九江',
-		    '香港',
-		    '澳门',
-		    '台北'
-		  ];
-  
-  		var nums = 7; //每页出现的数据量
+		var laypage = layui.laypage,layer = layui.layer;
+ 		var nums = 12; //每页出现的数据量
 	  //模拟渲染
 	  var render = function(curr){
 	    //此处只是演示，实际场景通常是返回已经当前页已经分组好的数据
@@ -118,7 +77,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         var result=_ajax.jsonajax("topicaction/gettopics.do",false,jsondata,"json");
         var str='';
         $(result).each(function(index,value){
-        	str+='<li onclick=\'topic_show('+value.id+');\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
+        	str+='<li onclick=\'topic_show(\"'+value.id+'\");\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span id=\'nickname\'>'+value.nickname+'</span>&nbsp;&nbsp;<span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img onclick=\'topic_show(\"'+value.id+'\");\' id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
         });
         return str;
 	  };
@@ -129,21 +88,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	var renderhot=function(){
   		var str='<li style=\'color:red;\'>hot</li><br>';
   		$(hotdata).each(function(index,value){
-        	str+='<li onclick=\'topic_show('+value.id+');\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
+        	str+='<li onclick=\'topic_show(\"'+value.id+'\");\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img onclick=\'topic_show(\"'+value.id+'\");\' id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
         });
         return str;
   	};
   	
+  	/*var recentdata=_ajax.jsonajax("topicaction/getRecentTopic.do",false,null,"json");
   	var rendertopic=function(){
   		var str='<li style=\'color:red;\'>recent</li><br>';
-  		$(hotdata).each(function(index,value){
-        	str+='<li onclick=\'topic_show('+value.id+');\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
+  		$(recentdata).each(function(index,value){
+        	str+='<li onclick=\'topic_show(\"'+value.id+'\");\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img onclick=\'topic_show(\"'+value.id+'\");\' id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
         });
         return str;
-  	};
+  	};*/
   	
   	document.getElementById('hot_list').innerHTML=renderhot();
-  	document.getElementById('recent_list').innerHTML=rendertopic();
+  	//document.getElementById('recent_list').innerHTML=rendertopic();
 	  //调用分页
 	  laypage({
 	    cont: 'blog_content'
