@@ -153,7 +153,7 @@ String id=(String)request.getAttribute("tid");//topic id
 	</script>
   </head>
 <ul class="layui-nav">
-  <li class="layui-nav-item layui-this"><a href="">首页</a></li>
+  <li class="layui-nav-item layui-this"><a href="index.jsp">首页</a></li>
   <li class="layui-nav-item">
     <a href="javascript:;">话题</a>
     <dl class="layui-nav-child">
