@@ -77,4 +77,26 @@ public class UserService {
 			return false;
 		}
 	}
+	
+	@Transactional
+	public TBaseUser findUserById(String userid){
+		TBaseUser user=null;
+		try {
+			user=(TBaseUser)this.genericHibernateDao.get(TBaseUser.class, userid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return user;
+	}
+	
+	@Transactional
+	public Boolean updateuser(TBaseUser user){
+		try {
+			this.genericHibernateDao.saveOrUpdate(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 }
