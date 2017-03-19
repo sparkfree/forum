@@ -4,11 +4,12 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
   <head>
-    <title>多米论坛</title>
+    <title>听说</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.8.3.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/layui/css/layui.css"  media="all">
 	<script src="${pageContext.request.contextPath}/resources/layui/layui.js" charset="utf-8"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>
+	<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload2.js"></script>
 	<style type="text/css">
 		.date_class{
 			font-size: 12px;
@@ -37,6 +38,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	var phonenumber="${sessionScope.user.phonenumber}";
 	var email="${sessionScope.user.email}";
 	var hobby="${sessionScope.user.hobby}";
+	var userface="${sessionScope.user.userface}";
 	$(function(){
 		user = "${sessionScope.user}";//user
 		if(user!=""){//用户已经登录
@@ -49,6 +51,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#phone").html(phonenumber);
 			$("#email").html(email);
 			$("#hobby").html(hobby);
+			if(userface==""){//如果用户还没有上传头像
+				$('#userface').attr("src","${pageContext.request.contextPath}/resources/images/tong.jpg");
+			}else{
+				$('#userface').attr("src","${pageContext.request.contextPath}/upload/userface/"+userface);			
+			}
 		}
 	});
 	
@@ -66,6 +73,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		$("#ephone").val(phonenumber);
 		$("#eemail").val(email);
 		$("#ehobby").val(hobby);
+		if(userface==""){//如果用户还没有上传头像
+				$('#myfacepng').attr("src","${pageContext.request.contextPath}/resources/images/tong.jpg");
+			}else{
+				$('#myfacepng').attr("src","${pageContext.request.contextPath}/upload/userface/"+userface);			
+			}
 		if($("#editme").is(":hidden")){
 			$("#aboutme").hide();
 			$("#editme").show();
@@ -234,6 +246,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    }
 		  });
   		});
+  		
+  		//ajax上传用户头像
+  		function ajaxFileUploadss(){
+  			$.ajaxFileUpload({
+	        url:'../useraction/uploaduserface.do?userid='+userid,//用于文件上传的服务器端请求地址
+	        secureuri:false,//一般设置为false
+	        fileElementId:'facefile',//文件上传空间的id属性  <input type="file" id="file" name="file" />
+	        dataType: 'json',//返回值类型 一般设置为json
+	        success: function (data, status){  //服务器成功响应处理函数
+	           	if(data.flag=='success'){ //从服务器返回的json中取出message中的数据
+	        	  	layer.msg("上传成功。");
+	        	  	$('#faceimagepath').val(data.faceimagepath);
+					$('#myfacepng').attr("src","${pageContext.request.contextPath}/upload/userface/"+data.faceimagepath);
+	           	}else if(data.flag=='typeerror'){
+	        	   	layer.msg("图片类型错误，上传失败。");
+	           	}else{
+	           		layer.msg("未知错误，上传失败！");
+	           	}
+	        },
+	        error: function (data, status, e){//服务器响应失败处理函数
+	           layer.msg("服务器无法连接！");
+	        }
+	    });
+  		}
 </script>
 </head>
 <!--菜单栏  -->  
@@ -265,6 +301,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </ul>
 
 <input id="userid" name="userid" type="hidden"/>
+<input id="faceimagepath" name="faceimagepath" type="hidden">
 <!--发表区  -->
 	<div style="margin: 25px;width: 60%;float: left;">
 			<fieldset class="layui-elem-field layui-field-title">
@@ -278,7 +315,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<ul id="aboutme" style="margin: 25px;width: 20%;;float:left;">
 		<fieldset class="layui-elem-field layui-field-title">
 		<legend>关于我&nbsp;&nbsp;<img onclick="edit();" style="cursor: pointer;" src="${pageContext.request.contextPath}/resources/images/edit.png"/></legend>
-		<li>头像&nbsp;&nbsp;<img class="image" id="" src="../resources/images/tong.jpg"></li><br>
+		<li>头像&nbsp;&nbsp;<img class="image" id="userface" src=""></li><br>
 		<li>昵称&nbsp;&nbsp;<span id="nickname"></span></li><br>
 		<li>大名&nbsp;&nbsp;<span id="username"></span></li><br>
 		<li>联系电话&nbsp;&nbsp;<span id="phone"></span></li><br>
@@ -290,10 +327,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		<fieldset class="layui-elem-field layui-field-title">
 		<legend>关于我&nbsp;&nbsp;<img onclick="edit();" style="cursor: pointer;" id="editbtn" src="${pageContext.request.contextPath}/resources/images/edit.png"/></legend>
 		<li>头像&nbsp;&nbsp;
-			  <img class="image" id="myfacepng" src="../resources/images/tong.jpg">
-			  <form target="layui-upload-iframe" method="post" key="set-mine" enctype="multipart/form-data" action=""> 
-			    <input name="file" class="layui-upload-file" type="file">
-			  </form>
+		    <img class="image" id="myfacepng" src="">
+			<input type="file" name="facefile" id="facefile"/>
+			<input type="button" onclick="ajaxFileUploadss()" value="上传"/>
 		</li><br>
 		<li>昵称&nbsp;&nbsp;<input class="layui-input" id="enickname" name="enickname" type="text"></li><br>
 		<li>大名&nbsp;&nbsp;<input class="layui-input" id="eusername" name="eusername" type="text"></li><br>

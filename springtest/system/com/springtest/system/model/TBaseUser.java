@@ -27,6 +27,7 @@ public class TBaseUser implements java.io.Serializable {
 	private String address;//地址
 	private String signin;//签到天数
 	private String hobby;//爱好
+	private String userface;//用户头像
 	// Constructors
 	/** default constructor */
 	public TBaseUser() {
@@ -38,7 +39,7 @@ public class TBaseUser implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TBaseUser(String userid, String username, String nickname,String password,String phonenumber,String email,String address,String signin,String hobby) {
+	public TBaseUser(String userid, String username, String nickname,String password,String phonenumber,String email,String address,String signin,String hobby,String userface) {
 		this.userid = userid;
 		this.username = username;
 		this.nickname = nickname;
@@ -48,6 +49,7 @@ public class TBaseUser implements java.io.Serializable {
 		this.address=address;
 		this.signin=signin;
 		this.hobby=hobby;
+		this.userface=userface;
 	}
 
 	// Property accessors
@@ -127,4 +129,14 @@ public class TBaseUser implements java.io.Serializable {
 	public void setHobby(String hobby) {
 		this.hobby = hobby;
 	}
+
+	@Column(name="USERFACE",length=50)
+	public String getUserface() {
+		return userface;
+	}
+
+	public void setUserface(String userface) {
+		this.userface = userface;
+	}
+	
 }
