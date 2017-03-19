@@ -5,7 +5,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 %>
 
   <head>
-    <title>多米论坛</title>
+    <title>听说</title>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.8.3.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/layui/css/layui.css"  media="all">
 	<script src="${pageContext.request.contextPath}/resources/layui/layui.js" charset="utf-8"></script>
@@ -39,6 +39,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function hitheart(ele,id){
 			ele.src="${pageContext.request.contextPath}/resources/images/hot_heart.png";//点赞后更换hot_heart图标
 			var heart_num=$("#heart_num"+id).val();
+			if(heart_num==undefined){
+				heart_num=0;
+			}
 			var heart_new=parseInt(heart_num)+1;
 			$("#heart_total"+id).html(heart_new);
 			//更新该主题点赞数
@@ -77,7 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         var result=_ajax.jsonajax("topicaction/gettopics.do",false,jsondata,"json");
         var str='';
         $(result).each(function(index,value){
-        	str+='<li onclick=\'topic_show(\"'+value.id+'\");\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span id=\'nickname\'>'+value.nickname+'</span>&nbsp;&nbsp;<span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img onclick=\'topic_show(\"'+value.id+'\");\' id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
+        	str+='<li onclick=\'topic_show(\"'+value.id+'\");\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span onMouseOver="javascript:show(this,\'mydiv1\');" onMouseOut="hide(this,\'mydiv1\')" id=\'nickname\'>'+value.nickname+'</span>&nbsp;&nbsp;<span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,\"'+value.id+'\");\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img onclick=\'topic_show(\"'+value.id+'\");\' id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
         });
         return str;
 	  };
@@ -88,7 +91,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	var renderhot=function(){
   		var str='<li style=\'color:red;\'>hot</li><br>';
   		$(hotdata).each(function(index,value){
-        	str+='<li onclick=\'topic_show(\"'+value.id+'\");\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img onclick=\'topic_show(\"'+value.id+'\");\' id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
+        	str+='<li onclick=\'topic_show(\"'+value.id+'\");\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,\"'+value.id+'\");\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img onclick=\'topic_show(\"'+value.id+'\");\' id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
         });
         return str;
   	};
@@ -114,6 +117,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  });
   
 });
+
+	function show(obj,id) {
+		var objDiv = $("#"+id+"");
+		$(objDiv).css("display","block");
+		$(objDiv).css("left", obj.clientX);
+		$(objDiv).css("top", obj.clientY + 10); 
+	}
+	
+	function hide(obj,id) {
+		var objDiv = $("#"+id+"");
+		$(objDiv).css("display", "none");
+	} 
 	
 	//my profile
 	/*function mytopic(){
@@ -166,4 +181,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </ul>
 <div id="blog_content" style="margin: 25px;float: left;clear: both;"></div>
  
- 
+<div id="mydiv1" style="position:absolute;display:none;border:1px solid silver;background:silver;">
+提示1效果
+</div>  

@@ -23,6 +23,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		.signin{
 			cursor: pointer;
 		}
+		.image{
+			width:43px;
+			height:43px;
+			border-radius:50px;
+		} 
 	</style>
 	<script>
 	var user="";
@@ -115,7 +120,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 		layui.use(['laypage', 'layer'], function(){
 	var laypage = layui.laypage,layer = layui.layer;
- 	var nums = 12; //每页出现的数据量
+ 	var nums = 8; //每页出现的数据量
 	  //模拟渲染
 	  var render = function(curr){
 	    var page=curr;
@@ -202,7 +207,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         		time: 20000, //20s后自动关闭
         		btn: ['我确定', '不了'],
         		yes: function(){
-        			var jsondata={tid:tid}
+        			var jsondata={tid:tid};
         			var result=_ajax.jsonajax("../topicaction/deletetopic.do",false,jsondata,"text");
         			if(result=="success"){
         				layer.msg("残忍地删除成功！");
@@ -218,6 +223,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       		});
 		}
 		
+		layui.use('upload', function(){
+		  layui.upload({
+		    url: '../topicaction/uploaduserlogo.do' //上传接口
+		    ,before: function(input){
+      			layer.msg('文件上传中');
+    			},            
+    		success: function(res){ //上传成功后的回调
+		      alert(res)
+		    }
+		  });
+  		});
 </script>
 </head>
 <!--菜单栏  -->  
@@ -262,6 +278,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<ul id="aboutme" style="margin: 25px;width: 20%;;float:left;">
 		<fieldset class="layui-elem-field layui-field-title">
 		<legend>关于我&nbsp;&nbsp;<img onclick="edit();" style="cursor: pointer;" src="${pageContext.request.contextPath}/resources/images/edit.png"/></legend>
+		<li>头像&nbsp;&nbsp;<img class="image" id="" src="../resources/images/tong.jpg"></li><br>
 		<li>昵称&nbsp;&nbsp;<span id="nickname"></span></li><br>
 		<li>大名&nbsp;&nbsp;<span id="username"></span></li><br>
 		<li>联系电话&nbsp;&nbsp;<span id="phone"></span></li><br>
@@ -272,6 +289,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<ul id="editme" style="margin: 25px;width: 20%;height:100px;float:left;display: none;">
 		<fieldset class="layui-elem-field layui-field-title">
 		<legend>关于我&nbsp;&nbsp;<img onclick="edit();" style="cursor: pointer;" id="editbtn" src="${pageContext.request.contextPath}/resources/images/edit.png"/></legend>
+		<li>头像&nbsp;&nbsp;
+			  <img class="image" id="myfacepng" src="../resources/images/tong.jpg">
+			  <form target="layui-upload-iframe" method="post" key="set-mine" enctype="multipart/form-data" action=""> 
+			    <input name="file" class="layui-upload-file" type="file">
+			  </form>
+		</li><br>
 		<li>昵称&nbsp;&nbsp;<input class="layui-input" id="enickname" name="enickname" type="text"></li><br>
 		<li>大名&nbsp;&nbsp;<input class="layui-input" id="eusername" name="eusername" type="text"></li><br>
 		<li>联系电话&nbsp;&nbsp;<input class="layui-input" id="ephone" name="ephone" type="text"></li><br>
