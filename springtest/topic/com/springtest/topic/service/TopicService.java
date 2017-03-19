@@ -52,6 +52,7 @@ public class TopicService {
 	@Transactional
 	public void updatehearts(String id,String heart){
 		boolean result=this.genericHibernateDao.executSQL("update t_base_topic set heart=? where id=?", new Object[]{heart,id});
+		System.out.println(result);
 	}
 	
 	@Transactional

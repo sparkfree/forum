@@ -1,8 +1,10 @@
 package com.springtest.topic.action;
 
+import java.io.File;
 import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.springtest.common.util.DateUtil;
 import com.springtest.system.model.TBaseUser;
@@ -200,5 +204,44 @@ public class TopicAction {
 			return "fail";
 		}
 	}
+	
+	/**
+	 * 上传用户头像
+	 * @param tid
+	 * @return
+	 */
+	@RequestMapping(value="/uploaduserlogo.do",method=RequestMethod.POST)
+	@ResponseBody
+	public String uploaduserlogo(HttpServletRequest request)throws Exception{
+		System.out.println("test file upload......");
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;  
+		String fileName = "";  
+		String uploadPath = "uploadFile/head/";  
+		String path =request.getSession().getServletContext().getRealPath("/")+uploadPath;    
+		String realPath = "";  
+		  for (Iterator it = multipartRequest.getFileNames(); it.hasNext();) {  
+			   String key = (String) it.next();  
+			   MultipartFile mulfile = multipartRequest.getFile(key);  
+			   fileName = mulfile.getOriginalFilename();  
+			   fileName = handlerFileName(fileName);  
+			   File file = new File(path + fileName);  
+			   mulfile.transferTo(file);  
+		  }  
+		  realPath = "{\"imagePath\":\""+uploadPath+fileName+"\"}";  
+		  return realPath;  
+	}
+	
+	//文件名称处理  
+	private String handlerFileName(String fileName) {  
+	  //处理名称start  
+	  fileName = (new Date()).getTime()+"_"+fileName;  
+	//时间戳+文件名，防止覆盖重名文件  
+	 // String pre = StringUtils.substringBeforeLast(fileName, ".");  
+	  //String end = StringUtils.substringAfterLast(fileName, ".");  
+	  //fileName = Digests.encodeByMd5(pre)+"."+end;//用MD5编码文件名，解析附件名称  
+	  //处理名称end  
+	  return fileName;  
+	 }  
+	  
 	
 }
