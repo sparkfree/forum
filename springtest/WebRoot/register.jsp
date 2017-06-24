@@ -3,54 +3,43 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
   <head>
-    <base href="<%=basePath%>">
-    
     <title>用户注册</title>
-    
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-	
-	<style type="text/css">
-		#logo{
-			font-size: 32px;
-			margin: 100px;
-		}
-		#register_box{
-			 box-shadow:10px 10px 5px 10px #EE9A49 ;
-		}
-	</style>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.8.3.js"></script>
+	 <!--响应式布局，自适应物理配置，initial-scale设置为1：完全不缩放-->
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- 引入bootstrap样式 -->
+     <link href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/assets/css/docs.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/assets/ico/listen.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="${pageContext.request.contextPath}/resources/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${pageContext.request.contextPath}/resources/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="${pageContext.request.contextPath}/resources/assets/ico/apple-touch-icon-57-precomposed.png">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.8.3.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/layui/css/layui.css"  media="all">
-	<script src="${pageContext.request.contextPath}/resources/layui/layui.js" charset="utf-8"></script>
-	<script src="${pageContext.request.contextPath}/resources/layui/lay/modules/laypage.js" charset="utf-8"></script>
 	<script type="text/javascript">
-		$(function(){
-			
-		});
-		
-		//加载layui模块
-		layui.use(['layer', 'laypage', 'element'], function(){
-  			var layer = layui.layer
-  			,laypage = layui.laypage
-  			,element = layui.element();
-  		});
-  		
   		//注册
 		function register(){
 			var nickname=$("#account").val();
+			if(nickname==""){
+				layer.msg('昵称不可以为空哦！');
+				return false;
+			}
 			var phone=$("#phone").val();
+			if(phone==""){
+				layer.msg('手机号不可以为空哦！');
+				return false;
+			}
 			var password=$("#password").val();
+			if(password==""){
+				layer.msg('密码不能为空哦！');
+				return false;
+			}
 			var jsondata={nickname:nickname,phone:phone,password:password};
 			var data=_ajax.jsonajax("useraction/userregister.do",false,jsondata,"text");
 			if(data=="register_success"){
@@ -90,23 +79,92 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 	</script>
   </head>
-  
-  <body>
-    <div style="background-color: #F5F5F5;width: 100%;height: 100%;">
-    	<span id="logo">多米论坛</span>
-    	<div id="register_box" style="width: 30%;height: 65%;margin: 50px auto;">
-    		<div style="">
-    		<div style="">
-    			<span><a href="login.jsp">登录</a></span>&nbsp;&nbsp;
-    			<span style="font-size: 18px;"><a href="register.jsp" style="color: red;">注册</a></span>
-    		</div>
-    		<br>
-   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/nickname.png"/>&nbsp;&nbsp;<input onblur="b_nickname();" style="width: 200px;height: 32px;" name="account" id="account" type="text" placeholder="你的昵称"/></div><br>
-   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/phone.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="phone" id="phone" type="text" placeholder="手机号"/></div><br>
-   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/password.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="password" id="password" type="password" placeholder="设置密码"/></div><br>
-   				<div style="margin-left: 50px;"><button style="width: 230px;height:38px;background: #32CD32;border: none;" onclick="register();"><span style="color: white;font-size: 18px;">注册</span></button></div>
-    		</div>
-    	</div>
-    </div>
+  <body data-spy="scroll" data-target=".subnav" data-offset="50">
+  	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<!-- 面包层 -->
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+          		</a>
+          		<a class="brand" href="index.html">简言</a>
+  		        <div class="nav-collapse">
+  		        	<ul class="nav">
+		              <li class="active">
+		                <a href="index.html">首页</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">话题</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">一起</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">听说</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">我的</a>
+		              </li>
+		              <li class="active">
+		                <a href="login.jsp">登录</a>
+		              </li>
+		              <li class="active">
+		                <a href="register.jsp">注册</a>
+		              </li>
+		            </ul>  
+  		        </div>
+			</div>
+		</div>
+	</div>  
+	
+<div class="container">
+	<header class="jumbotron masthead">
+  	<div class="inner">
+    	<h1>注册&nbsp;&nbsp;<span style="font-size: 16px;"><a href="login.jsp">登录</a></span></h1>
+    <form class="well" style="margin: 0 auto;">
+  		<label><img src="${pageContext.request.contextPath}/resources/images/nickname.png"/>昵称</label>
+  		<input id="nickname" name="nickname" type="text" class="span3" placeholder="请输入昵称">
+  		<label><img src="${pageContext.request.contextPath}/resources/images/phone.png"/>手机号</label>
+  		<input id="nickname" name="nickname" type="text" class="span3" placeholder="请输入手机号">
+ 		<label><img src="${pageContext.request.contextPath}/resources/images/password.png"/>密码</label>
+ 		<input id="password" name="password" type="password" class="span3" placeholder="请输入昵称">
+  		<br><a href="" class="btn btn-primary btn-large">注册</a>
+	</form>
+<%--      <a href="" class="btn btn-large">下载 Bootstrap <small>(v2.0.2)</small></a>--%>
+  </div>
+
+  <div class="bs-links">
+    <ul class="quick-links">
+      <li><a href="">关于我们</a></li>
+    </ul>
+    <ul class="quick-links">
+      <li class="follow-btn">
+        <a href="" class="twitter-follow-button" data-link-color="#0069D6" data-show-count="true">©2017 李帅康 All rights reserved.<br>
+    	浙ICP备17009657号</a>
+      </li>
+      <li class="tweet-btn">
+<%--        <a href="" class="twitter-share-button" data-url="" data-count="horizontal" data-via="twbootstrap" data-related="mdo:Creator of Twitter Bootstrap">Tweet</a>--%>
+      </li>
+    </ul>
+  </div>
+</header>
+</div>
+    <%-- <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>--%>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/google-code-prettify/prettify.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-transition.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-alert.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-modal.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-dropdown.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-tab.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-tooltip.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-popover.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-button.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-collapse.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-carousel.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-typeahead.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/application.js"></script>
   </body>
 </html>
