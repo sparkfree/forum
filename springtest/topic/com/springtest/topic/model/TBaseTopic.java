@@ -32,7 +32,7 @@ public class TBaseTopic implements java.io.Serializable {
 	private String nickname;//昵称
 	private Date publishdate;//发布时间
 	private String publishdatestr;
-	
+	private String userface;
 	public TBaseTopic() {
 		
 	}
@@ -146,6 +146,17 @@ public class TBaseTopic implements java.io.Serializable {
 	public void setPublishdatestr(String publishdatestr) {
 		this.publishdatestr = publishdatestr;
 	}
+
+	@Transient
+	public String getUserface() {
+		return userface;
+	}
+
+	public void setUserface(String userface) {
+		this.userface = userface;
+	}
+	
+	
 	
 	
 }
