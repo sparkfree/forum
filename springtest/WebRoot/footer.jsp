@@ -27,12 +27,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    background:#00A2CA;
 			    color:#FFF; 
 			    font-family:"\5FAE\8F6F\96C5\9ED1"; 
-			    font-size:16px
+			    font-size:16px;
+			    text-align: center;
 			    } 
 	</style>
   </head>
   
   <body>
-    <div id="footer">杭州星火信息科技有限公司</div>
+  
+    <div id="footer">
+    	©2017 李帅康 All rights reserved.<br>
+    	浙ICP备17009657号
+    </div>
   </body>
 </html>
