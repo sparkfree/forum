@@ -3,33 +3,25 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
+<!DOCTYPE html>
+<html lang="zh-CN">
   <head>
-    <title>听说</title>
+  <title>简言，分享你的故事</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- 引入bootstrap样式 -->
+     <link href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/assets/css/docs.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/assets/ico/yan.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="${pageContext.request.contextPath}/resources/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${pageContext.request.contextPath}/resources/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="${pageContext.request.contextPath}/resources/assets/ico/apple-touch-icon-57-precomposed.png">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.8.3.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/layui/css/layui.css"  media="all">
-	<script src="${pageContext.request.contextPath}/resources/layui/layui.js" charset="utf-8"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/ajaxfileupload2.js"></script>
-	<style type="text/css">
-		.date_class{
-			font-size: 12px;
-			color: green;
-		}
-		.heart_png{
-			cursor: pointer;
-		}
-		.topic:HOVER{
-			color: green;
-		}
-		.signin{
-			cursor: pointer;
-		}
-		.image{
-			width:43px;
-			height:43px;
-			border-radius:50px;
-		} 
-	</style>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>
+	
 	<script>
 	var user="";
 	var userid="${sessionScope.user.userid}";
@@ -160,10 +152,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	layui.use('layedit', function(){
 		var layedit = layui.layedit
  		,$ = layui.jquery;
+		
+		//上传图片
+		layedit.set({
+			  uploadImage: {
+			    url: '../topicaction/uploadimage.do' //接口url
+			    ,type: 'post' //默认post
+			    ,success:function(res){
+			    	alert(res)
+			    }
+			  }
+			});
  		
  		 //构建一个默认的编辑器
   		var index = layedit.build('topicarea', {
-		    tool: ['face', 'link', 'unlink', '|', 'left', 'center', 'right']
+		    tool: ['face', 'image','link', 'unlink', '|', 'left', 'center', 'right']
 		    ,height: 100
 		  });
   	  //编辑器外部操作
@@ -242,7 +245,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
       			layer.msg('文件上传中');
     			},            
     		success: function(res){ //上传成功后的回调
-		      alert(res)
+    			layer.msg(res);
 		    }
 		  });
   		});
@@ -252,11 +255,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   			$.ajaxFileUpload({
 	        url:'../useraction/uploaduserface.do?userid='+userid,//用于文件上传的服务器端请求地址
 	        secureuri:false,//一般设置为false
-	        fileElementId:'facefile',//文件上传空间的id属性  <input type="file" id="file" name="file" />
+	        fileElementId:'facefile',//文件上传控件的id属性  <input type="file" id="file" name="file" />
 	        dataType: 'json',//返回值类型 一般设置为json
 	        success: function (data, status){  //服务器成功响应处理函数
 	           	if(data.flag=='success'){ //从服务器返回的json中取出message中的数据
-	        	  	layer.msg("上传成功。");
+	        	  	layer.msg("上传成功！");
 	        	  	$('#faceimagepath').val(data.faceimagepath);
 					$('#myfacepng').attr("src","${pageContext.request.contextPath}/upload/userface/"+data.faceimagepath);
 	           	}else if(data.flag=='typeerror'){
@@ -270,77 +273,91 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        }
 	    });
   		}
+  		
+  		function hobbytip(){
+  			layer.msg("爱好填写越准确，为你匹配相似爱好的小伙伴越准确哦！-_^");
+  		}
+  		
 </script>
 </head>
-<!--菜单栏  -->  
-<ul class="layui-nav">
-  <li class="layui-nav-item"><a href="../index.jsp">首页</a></li>
-  <li class="layui-nav-item">
-    <a href="javascript:;">话题</a>
-    <dl class="layui-nav-child">
-      <dd><a href="">选项1</a></dd>
-      <dd><a href="">选项2</a></dd>
-      <dd><a href="">选项3</a></dd>
-    </dl>
-  </li>
-  <li class="layui-nav-item"><a href="">发现</a></li>
-  <li class="layui-nav-item">
-    <a href="javascript:;">消息</a>
-    <dl class="layui-nav-child">
-      <dd><a href="">移动模块</a></dd>
-      <dd><a href="">后台模版</a></dd>
-      <dd class="layui-this"><a href="">选中项</a></dd>
-      <dd><a href="">电商平台</a></dd>
-    </dl>
-  </li>
-  <li class="layui-nav-item"><a href="">社区</a></li>
-  <li class="layui-nav-item layui-this" style="cursor: pointer;"><a href="useraction/myprofile.do">我的</a></li>
-  <li class="layui-nav-item sign" style="float: right;"><a href="login.jsp">登录</a></li>
-  <li class="layui-nav-item sign" style="float: right;"><a href="register.jsp">注册</a></li>
-  <li class="layui-nav-item signin" style="float: right;display: none;">Hello,<span id="usernick"></span></li>
-</ul>
-
-<input id="userid" name="userid" type="hidden"/>
-<input id="faceimagepath" name="faceimagepath" type="hidden">
-<!--发表区  -->
-	<div style="margin: 25px;width: 60%;float: left;">
-			<fieldset class="layui-elem-field layui-field-title">
-  				<legend>说点什么</legend>
-			</fieldset>
-		<textarea class="layui-textarea" id="topicarea" style="display: none"></textarea>
-			<div class="site-demo-button" style="margin-top: 20px;">
-  				<button class="layui-btn site-demo-layedit" data-type="content">发布</button>
-			</div> 
+<body data-spy="scroll" data-target=".subnav" data-offset="50">
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<!-- 面包层 -->
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+          		</a>
+          		<a class="brand" href="index.html">简言</a>
+  		        <div class="nav-collapse">
+  		        	<ul class="nav">
+		              <li class="active">
+		                <a href="index.html">首页</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">话题</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">一起</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">听说</a>
+		              </li>
+		              <li class="active">
+		                <a href="useraction/myprofile.do">我的</a>
+		              </li>
+		              <li class="active">
+		                <a href="login.jsp">登录</a>
+		              </li>
+		              <li class="active">
+		                <a href="register.jsp">注册</a>
+		              </li>
+		            </ul>  
+  		        </div>
+			</div>
 		</div>
-	<ul id="aboutme" style="margin: 25px;width: 20%;;float:left;">
-		<fieldset class="layui-elem-field layui-field-title">
-		<legend>关于我&nbsp;&nbsp;<img onclick="edit();" style="cursor: pointer;" src="${pageContext.request.contextPath}/resources/images/edit.png"/></legend>
-		<li>头像&nbsp;&nbsp;<img class="image" id="userface" src=""></li><br>
-		<li>昵称&nbsp;&nbsp;<span id="nickname"></span></li><br>
-		<li>大名&nbsp;&nbsp;<span id="username"></span></li><br>
-		<li>联系电话&nbsp;&nbsp;<span id="phone"></span></li><br>
-		<li>邮箱&nbsp;&nbsp;<span id="email"></span></li><br>
-		<li>爱好&nbsp;&nbsp;<span id="hobby"></span></li><br>
-		</fieldset>
-	</ul>
-	<ul id="editme" style="margin: 25px;width: 20%;height:100px;float:left;display: none;">
-		<fieldset class="layui-elem-field layui-field-title">
-		<legend>关于我&nbsp;&nbsp;<img onclick="edit();" style="cursor: pointer;" id="editbtn" src="${pageContext.request.contextPath}/resources/images/edit.png"/></legend>
-		<li>头像&nbsp;&nbsp;
-		    <img class="image" id="myfacepng" src="">
-			<input type="file" name="facefile" id="facefile"/>
-			<input type="button" onclick="ajaxFileUploadss()" value="上传"/>
-		</li><br>
-		<li>昵称&nbsp;&nbsp;<input class="layui-input" id="enickname" name="enickname" type="text"></li><br>
-		<li>大名&nbsp;&nbsp;<input class="layui-input" id="eusername" name="eusername" type="text"></li><br>
-		<li>联系电话&nbsp;&nbsp;<input class="layui-input" id="ephone" name="ephone" type="text"></li><br>
-		<li>邮箱&nbsp;&nbsp;<input class="layui-input" id="eemail" name="eemail" type="text"></li><br>
-		<li>爱好&nbsp;&nbsp;<input class="layui-input" id="ehobby" name="ehobby" type="text"></li><br>
-		<li><button class="layui-btn" onclick="saveedit();">保存</button></li>
-		</fieldset>
-	</ul>
- 	<!-- 内容区 -->
-<ul id="my_topic_list" style="margin: 25px;width: 60%;float: left;cursor: pointer;"></ul>
-<!-- 分页 -->	
-<div id="myblog_content" style="margin: 25px;float: left;clear: both;"></div>
+	</div>  
+	<div class="container-fluid">
+  <div class="row-fluid">
+  	<div class="span8">
+    	<div class="row-fluid">
+    		<div id="topichtml">
+    			<textarea rows="" cols="" style="width: 80%;height: 48px;"></textarea>
+    			<br><a onclick="login();" class="btn btn-primary btn-large">发布</a>
+    		</div>
+    	</div>
+    </div>
+  	<div class="span3">
+  		<div class="sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">关于我</li>
+              <li><span class="label label-default">头像：</span></li><br>
+              <li><span class="label label-default">昵称：</span></li><br>
+              <li><span class="label label-default">大名：</span></li><br>
+              <li><span class="label label-default">联系电话：</span></li>
+              <li class="nav-header">汪洋在任时</li>
+              <li class="active"><a href="fluid.html#">汪书记最英明</a></li>
+              
+              <li class="nav-header">薄熙来在任时</li>
+             
+              <li class="nav-header">薄熙来下台了</li>
+             
+            </ul>
+          </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+	<div class="bs-links">
+	    <ul class="quick-links">
+	      <li><a href="">关于我们</a></li>
+	      <li><a href="">©2017 李帅康 All rights reserved.</a></li>
+    	 <li><a href="">浙ICP备17009657号</a></li>
+	    </ul>
+	  </div>
+</div>
+
+</body>
  
