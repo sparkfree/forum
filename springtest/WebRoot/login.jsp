@@ -4,35 +4,26 @@ String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
   <head>
-    <base href="<%=basePath%>">
+    <title>用户登录</title>
+	 <!--响应式布局，自适应物理配置，initial-scale设置为1：完全不缩放-->
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- 引入bootstrap样式 -->
+     <link href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/assets/css/docs.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/assets/ico/listen.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="${pageContext.request.contextPath}/resources/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${pageContext.request.contextPath}/resources/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="${pageContext.request.contextPath}/resources/assets/ico/apple-touch-icon-57-precomposed.png">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.8.3.js"></script>
     
-    <title>用户注册</title>
-    
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<!--
-	<link rel="stylesheet" type="text/css" href="styles.css">
-	-->
-	<style type="text/css">
-		#logo{
-			font-size: 32px;
-			margin: 100px;
-		}
-		#register_box{
-			 box-shadow:10px 10px 5px 10px #EE9A49 ;
-		}
-	</style>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.8.3.js"></script>
 	<script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>
-	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/layui/css/layui.css"  media="all">
-	<script src="${pageContext.request.contextPath}/resources/layui/layui.js" charset="utf-8"></script>
-	<script src="${pageContext.request.contextPath}/resources/layui/lay/modules/laypage.js" charset="utf-8"></script>
 	<script type="text/javascript">
 		$(function(){
 			$("#nickname").focus();
@@ -41,45 +32,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    if(ev.keyCode==13) {
 					login();//登录
 	     		}
-			}
+			};
 		});
-		
-		//加载layui模块
-		layui.use(['layer', 'laypage', 'element'], function(){
-  			var layer = layui.layer
-  			,laypage = layui.laypage
-  			,element = layui.element();
-  		});
   		
-  		//注册
-		function register(){
-			var nickname=$("#nickname").val();
-			var phone=$("#phone").val();
-			var password=$("#password").val();
-			var jsondata={nickname:nickname,phone:phone,password:password};
-			var data=_ajax.jsonajax("useraction/userregister.do",false,jsondata,"text");
-			if(data=="register_success"){
-				//注册成功
-				layer.msg('Hello,注册成功！');
-			}else if(data=="register_fail"){
-				//注册失败
-				layer.msg('Wow,注册失败！');
-			}
-		}
-		
 		//登录
 		function login(){
 			var nickname=$("#nickname").val();
+			if(nickname==""){
+				alert('昵称不可以为空哦！');
+				return false;
+			}
 			var password=$("#password").val();
+			if(password==""){
+				alert('密码不能为空哦！');
+				return false;
+			}
 			var jsondata={nickname:nickname,password:password};
 			var data=_ajax.jsonajax("useraction/userlogin.do",false,jsondata,"text");
 			if(data=="login_success"){
 				//注册成功
-				layer.msg('Hello,登录成功！');
+				alert('Hello,登录成功！');
 				location.href="index.jsp";//跳转至index.jsp
 			}else if(data=="login_fail"){
 				//注册失败
-				layer.msg('Wow,登录失败！');
+				alert('Wow,登录失败！');
 			}
 		}
 		
@@ -87,7 +63,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function b_nickname(){
 			var nickname=$("#nickname").val();
 			if(nickname==undefined||nickname==""){
-				layer.msg('昵称不能为空！');
+				//$('#nickstr').popover("show");
+				//layer.msg('昵称不能为空！');
 				return false;
 			}
 			var jsondata={nickname:nickname};
@@ -109,22 +86,96 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 	</script>
   </head>
-  
-  <body>
-    <div style="background-color: #F5F5F5;width: 100%;height: 100%;">
-    	<span id="logo">多米论坛</span>
-    	<div id="register_box" style="width: 30%;height: 65%;margin: 50px auto;">
-    		<div style="">
-    		<div style="">
-    			<span style="font-size: 18px;"><a href="login.jsp" style="color: red;">登录</a></span>&nbsp;&nbsp;
-    			<span><a href="register.jsp">注册</a></span>
-    		</div>
-    		<br>
-   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/nickname.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="nickname" id="nickname" type="text" placeholder="你的昵称"/></div><br>
-   				<div style="margin-left: 50px;"><img src="${pageContext.request.contextPath}/resources/images/password.png"/>&nbsp;&nbsp;<input style="width: 200px;height: 32px;" name="password" id="password" type="password" placeholder="输入密码"/></div><br>
-   				<div style="margin-left: 50px;"><button style="width: 230px;height:38px;background: #32CD32;border: none;" onclick="login();"><span style="color: white;font-size: 18px;">登录</span></button></div>
-    		</div>
-    	</div>
-    </div>
+  <body data-spy="scroll" data-target=".subnav" data-offset="50">
+  	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<!-- 面包层 -->
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+          		</a>
+          		<a class="brand" href="index.html">听说</a>
+  		        <div class="nav-collapse">
+  		        	<ul class="nav">
+		              <li class="active">
+		                <a href="index.html">首页</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">话题</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">一起</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">听说</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">我的</a>
+		              </li>
+		              <li class="active">
+		                <a href="login.jsp">登录</a>
+		              </li>
+		              <li class="active">
+		                <a href="register.jsp">注册</a>
+		              </li>
+		            </ul>  
+  		        </div>
+			</div>
+		</div>
+	</div>   
+  	
+ <div class="container">
+	<header class="jumbotron masthead">
+  <div class="inner">
+    <h1>登录&nbsp;&nbsp;<span style="font-size: 16px;"><a href="register.jsp">注册</a></span></h1>
+    <form class="well">
+  		<label><img src="${pageContext.request.contextPath}/resources/images/nickname.png"/>昵称</label>
+  		<input id="nickname" name="nickname" type="text" class="span3" placeholder="请输入昵称">
+ 		<label><img src="${pageContext.request.contextPath}/resources/images/password.png"/>密码</label>
+ 		<input id="password" name="password" type="password" class="span3" placeholder="请输入昵称">
+  		<br><a onclick="login();" class="btn btn-primary btn-large">登录</a>
+	</form>
+<%--      <a href="" class="btn btn-large">下载 Bootstrap <small>(v2.0.2)</small></a>--%>
+  </div>
+
+  <div class="bs-links">
+    <ul class="quick-links">
+      <li><a href="">关于我们</a></li>
+    </ul>
+    <ul class="quick-links">
+      <li class="follow-btn">
+        <a href="" class="twitter-follow-button" data-link-color="#0069D6" data-show-count="true">©2017 李帅康 All rights reserved.<br>
+    	浙ICP备17009657号</a>
+      </li>
+      <li class="tweet-btn">
+<%--        <a href="" class="twitter-share-button" data-url="" data-count="horizontal" data-via="twbootstrap" data-related="mdo:Creator of Twitter Bootstrap">Tweet</a>--%>
+      </li>
+    </ul>
+  </div>
+</header>
+</div>
+    
+    <%-- <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>--%>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/google-code-prettify/prettify.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-transition.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-alert.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-modal.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-dropdown.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-tab.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-tooltip.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-popover.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-button.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-collapse.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-carousel.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-typeahead.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/application.js"></script>
+
+	<script type="text/javascript">
+		
+	</script>
+    
   </body>
 </html>
