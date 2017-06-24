@@ -39,7 +39,7 @@ public class LoginFilter implements Filter {
 			HttpServletRequest req = (HttpServletRequest) request;
 			HttpServletResponse res = (HttpServletResponse) response;
 			String uri = req.getRequestURI();// 请求路径
-			if(uri.indexOf("/index.jsp")>-1||uri.indexOf("/register.jsp")>-1||uri.indexOf("/login.jsp")>-1){
+			if(uri.indexOf("/homepage.jsp")>-1||uri.indexOf("/index.jsp")>-1||uri.indexOf("/register.jsp")>-1||uri.indexOf("/login.jsp")>-1){
 				chain.doFilter(request, response);//继续此次请求
 				return;
 			}
