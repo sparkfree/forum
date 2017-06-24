@@ -3,184 +3,207 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
+<!DOCTYPE html>
+<html lang="zh-CN">
   <head>
-    <title>听说</title>
+  <title>简言，分享你的故事</title>
+  <!--响应式布局，自适应物理配置，initial-scale设置为1：完全不缩放-->
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- 引入bootstrap样式 -->
+     <link href="${pageContext.request.contextPath}/resources/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/assets/css/docs.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resources/assets/js/google-code-prettify/prettify.css" rel="stylesheet">
+     <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/assets/ico/yan.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="${pageContext.request.contextPath}/resources/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${pageContext.request.contextPath}/resources/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="${pageContext.request.contextPath}/resources/assets/ico/apple-touch-icon-57-precomposed.png">
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-1.8.3.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/layui/css/layui.css"  media="all">
-	<script src="${pageContext.request.contextPath}/resources/layui/layui.js" charset="utf-8"></script>
-	<script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>
-	<style type="text/css">
-		.date_class{
-			font-size: 12px;
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/common.js"></script>
+  	
+  	<style type="text/css">
+  		.tfont:HOVER {
 			color: green;
 		}
-		.heart_png{
-			cursor: pointer;
-		}
-		.topic:HOVER{
-			color: green;
-		}
-		.signin{
-			cursor: pointer;
-		}
-	</style>
-	<script>
-	var user="";
-	$(function(){
-		user = "${sessionScope.user}";//user
-		if(user!=""){//用户已经登录
-			$(".sign").hide();
-			var nickname="${sessionScope.user.nickname}";
-			$("#usernick").html(nickname);	
-			$(".signin").show();
-		}
-	});
-		function hitheart(ele,id){
-			ele.src="${pageContext.request.contextPath}/resources/images/hot_heart.png";//点赞后更换hot_heart图标
-			var heart_num=$("#heart_num"+id).val();
-			if(heart_num==undefined){
-				heart_num=0;
-			}
-			var heart_new=parseInt(heart_num)+1;
-			$("#heart_total"+id).html(heart_new);
-			//更新该主题点赞数
-			var jsondata={id:id,heart:heart_new};
-			_ajax.jsonajax("topicaction/updatehearts.do",false,jsondata,"text");
-		}
-		
-		//话题详情
-		function topic_show(tid){
-			location.href="topicaction/topiccomment.do?tid="+tid;//通过controller跳转至web-inf中的页面
-		}
-		
-		layui.use('element', function(){
-		  var element = layui.element(); //导航的hover效果、二级菜单等功能，需要依赖element模块
-		  //监听导航点击
-		  element.on('nav(demo)', function(elem){
-		    layer.msg(elem.text());
-		  });
-		});
-		
-		layui.use(['laypage', 'layer'], function(){
-		var laypage = layui.laypage,layer = layui.layer;
- 		var nums = 12; //每页出现的数据量
-	  //模拟渲染
-	  var render = function(curr){
-	    //此处只是演示，实际场景通常是返回已经当前页已经分组好的数据
-	    //var str = '', last = curr*nums - 1;
-	    //last = last >= data.length ? (data.length-1) : last;
-	    //for(var i = (curr*nums - nums); i <= last; i++){
-	    //  str += '<li>'+ data[i] +'</li>';
-	    //}
-	    //return str;
-	    var page=curr;
-	    var rows=nums;//alert(page+","+rows)
-	    var jsondata={page:page,rows:rows};
-        var result=_ajax.jsonajax("topicaction/gettopics.do",false,jsondata,"json");
-        var str='';
-        $(result).each(function(index,value){
-        	str+='<li onclick=\'topic_show(\"'+value.id+'\");\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span onMouseOver="javascript:show(this,\'mydiv1\');" onMouseOut="hide(this,\'mydiv1\')" id=\'nickname\'>'+value.nickname+'</span>&nbsp;&nbsp;<span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,\"'+value.id+'\");\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img onclick=\'topic_show(\"'+value.id+'\");\' id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
-        });
-        return str;
-	  };
-  		
-  	var datasum=_ajax.jsonajax("topicaction/gettopicsum.do",false,null,"text");//查询数据总数
-  	
-  	var hotdata=_ajax.jsonajax("topicaction/getHotTopic.do",false,null,"json");
-  	var renderhot=function(){
-  		var str='<li style=\'color:red;\'>hot</li><br>';
-  		$(hotdata).each(function(index,value){
-        	str+='<li onclick=\'topic_show(\"'+value.id+'\");\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,\"'+value.id+'\");\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img onclick=\'topic_show(\"'+value.id+'\");\' id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
-        });
-        return str;
-  	};
-  	
-  	/*var recentdata=_ajax.jsonajax("topicaction/getRecentTopic.do",false,null,"json");
-  	var rendertopic=function(){
-  		var str='<li style=\'color:red;\'>recent</li><br>';
-  		$(recentdata).each(function(index,value){
-        	str+='<li onclick=\'topic_show(\"'+value.id+'\");\' class=\'topic\'>'+value.topic+'<li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,'+value.id+');\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img onclick=\'topic_show(\"'+value.id+'\");\' id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
-        });
-        return str;
-  	};*/
-  	
-  	document.getElementById('hot_list').innerHTML=renderhot();
-  	//document.getElementById('recent_list').innerHTML=rendertopic();
-	  //调用分页
-	  laypage({
-	    cont: 'blog_content'
-	    ,pages: Math.ceil(datasum/nums) //得到总页数
-	    ,jump: function(obj){
-	      document.getElementById('biuuu_city_list').innerHTML = render(obj.curr);
-	    }
-	  });
-  
-});
-
-	function show(obj,id) {
-		var objDiv = $("#"+id+"");
-		$(objDiv).css("display","block");
-		$(objDiv).css("left", obj.clientX);
-		$(objDiv).css("top", obj.clientY + 10); 
-	}
-	
-	function hide(obj,id) {
-		var objDiv = $("#"+id+"");
-		$(objDiv).css("display", "none");
-	} 
-	
-	//my profile
-	/*function mytopic(){
-		if(user==""){//用户未登录
-			layer.msg('小伙伴，要先登录哦！');
-			setTimeout(function (){
-				location.href="login.jsp";
-	   		}, 1000); 
-			return;
-		}
-	}*/
-	
-	</script>
+  	</style>
   </head>
-  
-<ul class="layui-nav">
-  <li class="layui-nav-item layui-this"><a href="">首页</a></li>
-  <li class="layui-nav-item">
-    <a href="javascript:;">话题</a>
-    <dl class="layui-nav-child">
-      <dd><a href="">选项1</a></dd>
-      <dd><a href="">选项2</a></dd>
-      <dd><a href="">选项3</a></dd>
-    </dl>
-  </li>
-  <li class="layui-nav-item"><a href="">发现</a></li>
-  <li class="layui-nav-item">
-    <a href="javascript:;">消息</a>
-    <dl class="layui-nav-child">
-      <dd><a href="">移动模块</a></dd>
-      <dd><a href="">后台模版</a></dd>
-      <dd class="layui-this"><a href="">选中项</a></dd>
-      <dd><a href="">电商平台</a></dd>
-    </dl>
-  </li>
-  <li class="layui-nav-item"><a href="">社区</a></li>
-  <li class="layui-nav-item" style="cursor: pointer;"><a href="useraction/myprofile.do">我的</a></li>
-  
-  <li class="layui-nav-item sign" style="float: right;"><a href="login.jsp">登录</a></li>
-  <li class="layui-nav-item sign" style="float: right;"><a href="register.jsp">注册</a></li>
-  <li class="layui-nav-item signin" style="float: right;display: none;">Hello,<span id="usernick"></span></li>
-</ul>
 
-<ul id="biuuu_city_list" style="margin: 25px;width: 60%;float: left;cursor: pointer;"></ul>
-<ul id="hot_list" style="margin: 25px;width: 20%;;float:left;">
+<body data-spy="scroll" data-target=".subnav" data-offset="50">
+	<div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<!-- 面包层 -->
+				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+		            <span class="icon-bar"></span>
+          		</a>
+          		<a class="brand" href="index.html">简言</a>
+  		        <div class="nav-collapse">
+  		        	<ul class="nav">
+		              <li class="active">
+		                <a href="index.html">首页</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">话题</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">一起</a>
+		              </li>
+		              <li class="active">
+		                <a href="index.html">听说</a>
+		              </li>
+		              <li class="active">
+		                <a href="useraction/myprofile.do">我的</a>
+		              </li>
+		              <li class="active">
+		                <a href="login.jsp">登录</a>
+		              </li>
+		              <li class="active">
+		                <a href="register.jsp">注册</a>
+		              </li>
+		            </ul>  
+  		        </div>
+			</div>
+		</div>
+	</div>   
+<div class="container-fluid">
+	<div id="myCarousel" class="carousel slide">
+    <!-- 轮播（Carousel）指标 -->
+    <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>   
+    <!-- 轮播（Carousel）项目 -->
+    <div class="carousel-inner">
+        <div class="item active">
+            <img style="height: 280px;width: 100%;" src="${pageContext.request.contextPath}/resources/images/night.jpg" alt="First slide">
+        </div>
+        <div class="item">
+            <img style="height: 280px;width: 100%;" src="${pageContext.request.contextPath}/resources/images/night.jpg" alt="Second slide">
+        </div>
+        <div class="item">
+            <img style="height: 280px;width: 100%;" src="${pageContext.request.contextPath}/resources/images/night.jpg" alt="Third slide">
+        </div>
+    </div>
+    <!-- 轮播（Carousel）导航 -->
+    <a class="carousel-control left" href="#myCarousel" 
+        data-slide="prev">&lsaquo;
+    </a>
+    <a class="carousel-control right" href="#myCarousel" 
+        data-slide="next">&rsaquo;
+    </a>
+</div>
 
-</ul> 
-<ul id="recent_list" style="margin: 25px;width: 20%;float: left;">
-	
-</ul>
-<div id="blog_content" style="margin: 25px;float: left;clear: both;"></div>
- 
-<div id="mydiv1" style="position:absolute;display:none;border:1px solid silver;background:silver;">
-提示1效果
-</div>  
+  <div class="row-fluid">
+  	<div class="span8">
+    	<div class="row-fluid">
+    		<div id="topichtml">
+    		</div>
+    	</div>
+    </div>
+  	<div class="span3">
+  		<div class="sidebar-nav">
+            <ul class="nav nav-list">
+              <li class="nav-header">汪洋在任时</li>
+              <li class="active"><a href="fluid.html#">汪书记最英明</a></li>
+              <li><a href="fluid.html#">汪书记最英明</a></li>
+              <li><a href="fluid.html#">汪书记最英明</a></li>
+              <li><a href="fluid.html#">汪书记最英明</a></li>
+              <li class="nav-header">薄熙来在任时</li>
+              <li><a href="fluid.html#">薄书记最英明</a></li>
+              <li><a href="fluid.html#">薄书记最英明</a></li>
+              <li><a href="fluid.html#">薄书记最英明</a></li>
+              <li><a href="fluid.html#">薄书记最英明</a></li>
+              <li><a href="fluid.html#">薄书记最英明</a></li>
+              <li><a href="fluid.html#">薄书记最英明</a></li>
+              <li class="nav-header">薄熙来下台了</li>
+              <li><a href="fluid.html#">中央最英明</a></li>
+              <li><a href="fluid.html#">中央最英明</a></li>
+              <li><a href="fluid.html#">中央最英明</a></li>
+            </ul>
+          </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+	<div class="bs-links">
+	    <ul class="quick-links">
+	      <li><a href="">关于我们</a></li>
+	      <li><a href="">©2017 李帅康 All rights reserved.</a></li>
+    	 <li><a href="">浙ICP备17009657号</a></li>
+	    </ul>
+	  </div>
+</div>
+<%-- <script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>--%>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/google-code-prettify/prettify.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-transition.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-alert.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-modal.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-dropdown.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-tab.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-tooltip.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-popover.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-button.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-collapse.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-carousel.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-typeahead.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/assets/js/application.js"></script>
+
+	<script type="text/javascript">
+	$(function(){
+		user = "${sessionScope.user}";
+		if(user!=""){//用户已经登录
+			var nickname="${sessionScope.user.nickname}";
+		}
+		
+		var jsondata={page:1,rows:12};
+        var result=_ajax.jsonajax("topicaction/gettopics.do",false,jsondata,"json");
+        var str='<ul style=\'width:100%\' class="thumbnails">';
+        $(result).each(function(index,value){
+        	//str+='<li onclick=\'topic_show(\"'+value.id+'\");\'><img class="image" src=\"${pageContext.request.contextPath}/upload/userface/'+value.userface+'\"><span onMouseOver="javascript:show(this,\'mydiv1\');" onMouseOut="hide(this,\'mydiv1\')" id=\'nickname\'>'+value.nickname+'</span><br><span class=\'topic\'>'+value.topic+'</span><li><br><div style=\'float:right;margin-right:10px;\'><span class=\'date_class\'>'+value.publishdate+'</span>&nbsp;&nbsp;<img onclick=\'hitheart(this,\"'+value.id+'\");\' class=\'heart_png\' src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/><span id=\'heart_total'+value.id+'\'>'+value.heart+'</span><input id=\'heart_num'+value.id+'\' type=\'hidden\' value=\''+value.heart+'\'>&nbsp;&nbsp;<img onclick=\'topic_show(\"'+value.id+'\");\' id=\'talk\' src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/><span id=\'talk_num\'>'+value.comment+'</span></div><hr>';
+        	if(value.image==null||value.image==""){
+        		str+="<li style=\"width:100%;\" class=\"\"><div class=\"thumbnail\"><p><img class=\"image\" src=\"${pageContext.request.contextPath}/upload/userface/"+value.userface+"\">&nbsp;&nbsp;<span>"+value.nickname+"</span></p><p class=\"tfont\">"+value.topic+"</p><p><img src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/>&nbsp;<span>"+value.heart+"</span>&nbsp;&nbsp;<img src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/>&nbsp<span>"+value.comment+"</span></p></div></li>";
+        	}else{
+        		str+="<li class=\"\"><div class=\"thumbnail\">"+
+        		+"<img src=\""+value.image+"\" alt=\"\">"+
+        	      +"<h5>"+value.topic+"</h5><p></p></div></li>";
+        	}
+        });
+        str+='</ul>';
+        $('#topichtml').html(str);
+        $('#hothtml').html(str);
+        var page=1;//定义一个页数变量，页面滚动时+1
+        $(window).scroll(function() {  
+            var scrollTop = $(this).scrollTop(),scrollHeight = $(document).height(),windowHeight = $(this).height();  
+                var positionValue = (scrollTop + windowHeight) - scrollHeight;  
+             if (positionValue == 0) {  
+                   page=page+1;
+                   var jsondata={page:page,rows:12};
+                   var result=_ajax.jsonajax("topicaction/gettopics.do",false,jsondata,"json");
+                   if(result.length==0){
+                	   alert("没有更多数据了");
+                	   page=page-1;
+                	   return;
+                   }
+                   var strmore="";
+                   $(result).each(function(index,value){
+                   	if(value.image==null||value.image==""){
+                   		strmore+="<li style=\"width:100%;\" class=\"\"><div class=\"thumbnail\"><p><img class=\"image\" src=\"${pageContext.request.contextPath}/upload/userface/"+value.userface+"\">&nbsp;&nbsp;<span>"+value.nickname+"</span></p><p class=\"tfont\">"+value.topic+"</p><p><img src=\'${pageContext.request.contextPath}/resources/images/gray_heart.png\'/>&nbsp;<span>"+value.heart+"</span>&nbsp;&nbsp;<img src=\'${pageContext.request.contextPath}/resources/images/talk.png\'/>&nbsp<span>"+value.comment+"</span></p></div></li>";
+                   	}else{
+                   		strmore+="<li class=\"\"><div class=\"thumbnail\">"+
+                   		+"<img src=\""+value.image+"\" alt=\"\">"+
+                   	      +"<h5>"+value.topic+"</h5><p></p></div></li>";
+                   	}
+                   });
+                   $('#topichtml').append(strmore);
+              }  
+        });  
+	});
+	</script>
+</body>
+</html>
